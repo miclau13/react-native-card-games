@@ -17,7 +17,7 @@ const RootTab = () => {
       screenOptions={screenOptions}
       tabBarOptions={tabBarOptions}
     >
-      <Tab.Screen name="HomeStack" component={HomeStack} />
+      <Tab.Screen name="HomeStack" component={HomeStack} options={{ tabBarLabel: 'Home' }} />
     </Tab.Navigator>
   )
 };

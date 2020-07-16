@@ -2,9 +2,7 @@ import { EventMapBase, NavigationState, RouteConfig } from '@react-navigation/na
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
 
 const options: RouteConfig<HomeStackParamList, keyof HomeStackParamList, NavigationState, object, EventMapBase>['options'] = (props) => {
-  return {
-    // title: 'Home', 
-  };
+  return {};
 };
 
 export default options;

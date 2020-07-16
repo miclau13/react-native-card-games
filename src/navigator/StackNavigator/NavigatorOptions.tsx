@@ -6,11 +6,12 @@ import { HomeStackParamList } from './HomeStack';
 type ScreenOptions = StackNavigationOptions | ((props: {
   route: RouteProp<HomeStackParamList, keyof HomeStackParamList>;
   navigation: any;
-}) => StackNavigationOptions)
+}) => StackNavigationOptions) | undefined;
 
 export const screenOptions: ScreenOptions = (props) => {
 
   return ({
-
+    // title: "Home"
+    tabBarLabel: "Home"
   })
 };
