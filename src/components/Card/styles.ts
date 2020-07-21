@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     top: 0,
   },
   flipContainer: {
-    borderRadius: 8,
-    borderWidth: 2,
+    // borderRadius: 8,
+    // borderWidth: 2,
   },
   root: {
     padding: 16,

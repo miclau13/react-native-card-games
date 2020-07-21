@@ -4,7 +4,7 @@ import { Image } from 'react-native-elements';
 
 import styles from './styles';
 
-const BackImage = require('./assets/rice_cover.jpeg');
+const BACKSIDE_CARD_IMAGE = require('@assets/Cards/Back_Side_Card.jpg');
 
 export interface CardProps {
   disabled: boolean;
@@ -36,15 +36,17 @@ const Card: React.ComponentType<CardProps> = (props) => {
 
   const imageSrc = React.useMemo(() => {
     const frontImage = 
-      type === "paper" 
-        ? require('./assets/paper_roll_cover.jpeg')
-        : type === "mask" 
-            ? require('./assets/mask_cover.png')
-            : require('./assets/sanitizer_cover.jpeg')
-    return isFlipped || solved ? frontImage : BackImage
+      type === "diamondsKing" 
+        ? require('@assets/Cards/Diamonds/Diamonds_King.png')
+        : type === "spadesJack" 
+            ? require('@assets/Cards/Spades/Spades_Jack.png')
+            // ? require('@assets/Diamonds_King.png')
+            // : require('@assets/Diamonds_King.png')
+            : require('@assets/Cards/Hearts/Hearts_Queen.png')
+    return isFlipped || solved ? frontImage : BACKSIDE_CARD_IMAGE
   }
     
-  , [BackImage, isFlipped, type, solved]);
+  , [BACKSIDE_CARD_IMAGE, isFlipped, type, solved]);
 
   let flipAnimatedValue = new Animated.Value(0);
   let val = 0;
@@ -96,7 +98,7 @@ const Card: React.ComponentType<CardProps> = (props) => {
           <Image 
             containerStyle={[styles.flipContainer, styles.flipCard]}
             source={imageSrc}
-            style={{ height: 200, width: 150 }}
+            style={{ height: 300, width: 200 }}
             resizeMode="contain"
           />
         </Animated.View>
@@ -104,7 +106,7 @@ const Card: React.ComponentType<CardProps> = (props) => {
           <Image 
             containerStyle={[styles.flipContainer, styles.flipCard]}
             source={imageSrc}
-            style={{ height: 200, width: 150 }}
+            style={{ height: 300, width: 200 }}
             resizeMode="contain"
           />
         </Animated.View>

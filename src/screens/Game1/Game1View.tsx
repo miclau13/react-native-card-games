@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
 
 import Board, { BoardProps } from '@components/Board';
+import GameBackground, { GameBackgroundProps } from '@components/GameBackground';
 import styles from './styles';
 
 export interface Game1ViewProps {
@@ -22,7 +22,7 @@ const Game1View: React.ComponentType<Game1ViewProps> = (props) => {
   } = props;
   
   return (
-    <View>
+    <GameBackground>
       <Board 
         cardList={cardList}
         disabled={disabled}
@@ -30,7 +30,7 @@ const Game1View: React.ComponentType<Game1ViewProps> = (props) => {
         handleCardOnPress={handleCardOnPress}
         solvedCardList={solvedCardList}
       />
-    </View>
+    </GameBackground>
   );
 }
 export default React.memo(Game1View);

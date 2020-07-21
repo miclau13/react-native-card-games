@@ -8,6 +8,7 @@
     "noEmit": true,
     "paths": {
       "*": ["src/*"],
+      "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
       "@navigator/*": ["src/navigator/*"],
       "@screens/*": ["src/screens/*"],

@@ -7,6 +7,7 @@ import { screenOptions, tabBarOptions } from './NavigatorOptions';
 
 export type RootTabsParamList = {
   HomeStack: undefined;
+  SettingStack: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabsParamList>();

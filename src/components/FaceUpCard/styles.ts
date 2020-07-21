@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  }
+  container: {
+    // padding: 16,
+  },
+  image: {
+    height: 300, 
+    width: 300
+  },
 });
 
 export default styles;
