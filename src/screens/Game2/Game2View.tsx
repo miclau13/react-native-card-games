@@ -9,45 +9,22 @@ import styles from './styles';
 
 
 export interface Game2ViewProps {
-};
-
-interface Game2View {
+  dropZoneValues: LayoutRectangle;
   handleDropZoneOnLayout: Exclude<ViewProps['onLayout'], undefined>;
   handleOnDragRelease: Exclude<DraggableProps['onDragRelease'], undefined>;
+  isInsideDropZone: (gestureState: PanResponderGestureState) => boolean;
 };
+
+interface Game2View {};
 
 const Game2View: React.ComponentType<Game2ViewProps> = (props) => {
   const { 
+    dropZoneValues,
+    handleDropZoneOnLayout,
+    handleOnDragRelease,
+    isInsideDropZone,
   } = props;
 
-  const [dropZoneValues, setDropZoneValues] = React.useState<LayoutRectangle>({
-    "height": 0,
-    "width": 0,
-    "x": 0,
-    "y": 0,
-  });
-
-  const [score, setScore] = React.useState(0);
-
-  const isInsideDropZone = React.useCallback((gesture: PanResponderGestureState) => { 
-    const isInsideBoundY = gesture.moveY > dropZoneValues.y && gesture.moveY < dropZoneValues.y + dropZoneValues.height;
-    const isInsideBoundX = gesture.moveX > dropZoneValues.x && gesture.moveX < dropZoneValues.x + dropZoneValues.width;
-    return isInsideBoundY && isInsideBoundX;
-  }, [dropZoneValues]);
-
-  const handleDropZoneOnLayout = React.useCallback<Game2View['handleDropZoneOnLayout']>((event) => {
-    setDropZoneValues(event.nativeEvent.layout);
-  }, []);
-
-  const handleOnDragRelease = React.useCallback<Game2View['handleOnDragRelease']>((e, gesture) => {   
-    function increaseScore() {
-      setScore(score => score + 1);
-    };
-    if (isInsideDropZone(gesture)) {
-      increaseScore();
-    };
-  }, [dropZoneValues]);
-  
   return (
     <GameBackground>
       <View style={styles.container}>
@@ -89,12 +66,7 @@ const Game2View: React.ComponentType<Game2ViewProps> = (props) => {
           renderSize={300} 
           x={150}
           y={0}
-          // onRelease={()=>console.log('onRelease')}
           onDragRelease={handleOnDragRelease}
-          // onLongPress={()=>console.log('long press')}
-          // onShortPressRelease={()=>console.log('press drag')}
-          // onPressIn={()=>console.log('in press')}
-          // onPressOut={()=>console.log('out press')}
           dropZoneValues={dropZoneValues}
           isInsideDropZone={isInsideDropZone}
         />
@@ -104,12 +76,7 @@ const Game2View: React.ComponentType<Game2ViewProps> = (props) => {
           renderSize={300} 
           x={450}
           y={0}
-          // onRelease={()=>console.log('onRelease')}
           onDragRelease={handleOnDragRelease}
-          // onLongPress={()=>console.log('long press')}
-          // onShortPressRelease={()=>console.log('press drag')}
-          // onPressIn={()=>console.log('in press')}
-          // onPressOut={()=>console.log('out press')}
           dropZoneValues={dropZoneValues}
           isInsideDropZone={isInsideDropZone}
         />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { PanResponderGestureState } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
@@ -16,53 +17,53 @@ type Props = {
 };
 
 interface Game3 {
-  cardList: Game3ViewProps['cardList'];
-  flippedCardIdList: Game3ViewProps['flippedCardIdList'];
-  handleCardOnPress: Game3ViewProps['handleCardOnPress'];
   loading: boolean;
-  solvedCardList: Game3ViewProps['solvedCardList'];
+  score: number;
 };
 
 const Game3: React.ComponentType<Props> = (props) => {
   const { navigation } = props;
 
-  const [cardList, setCardList] = React.useState<Game3['cardList']>(getDefaultDeck());
-  const [solvedCardList, setSolvedCardList] = React.useState<Game3['solvedCardList']>([]);
-  const [disabled, setDisabled] = React.useState(false);
-  const [flippedCardIdList, setFlippedCardIdList] = React.useState<Game3['flippedCardIdList']>([]);
+  const [dropZoneValues, setDropZoneValues] = React.useState<Game3ViewProps['dropZoneValues']>({
+    "height": 0,
+    "width": 0,
+    "x": 0,
+    "y": 0,
+  });
   const [loading] = React.useState<Game3['loading']>(false);
+  const [score, setScore] = React.useState<Game3['score']>(0);
+  const [shouldFlip, setShouldFlip] = React.useState<Game3ViewProps['shouldFlip']>(false);
 
-  const handleCardOnPress = React.useCallback<Game3['handleCardOnPress']>(id => {
-    setDisabled(true);
-    if (flippedCardIdList.length === 0) {
-      setFlippedCardIdList([id]);
-      setDisabled(false);
-    } else {
-      if (sameCardClicked(id)) return;
-      setFlippedCardIdList(list => [...list, id]);
-      if (isMatch(id)) {
-        setSolvedCardList(list => [ ...list, flippedCardIdList[0], id]);
-        resetCardList();
-      } else {
-        setTimeout(resetCardList, 500)
-      }
-    }
-  }, [flippedCardIdList]);
+  const isInsideDropZone = React.useCallback<Game3ViewProps['isInsideDropZone']>((gesture: PanResponderGestureState) => { 
+    const isInsideBoundY = gesture.moveY > dropZoneValues.y && gesture.moveY < dropZoneValues.y + dropZoneValues.height;
+    const isInsideBoundX = gesture.moveX > dropZoneValues.x && gesture.moveX < dropZoneValues.x + dropZoneValues.width;
+    return isInsideBoundY && isInsideBoundX;
+  }, [dropZoneValues]);
 
-  const isMatch = React.useCallback(id => {
-    const clickedCard = cardList.find(card => card.id === id);
-    const flippedCard = cardList.find(card => flippedCardIdList[0] === card.id);
-    return flippedCard?.type === clickedCard?.type;
-  }, [flippedCardIdList]);
-
-  const resetCardList = React.useCallback(() => {
-    setFlippedCardIdList([]);
-    setDisabled(false);
+  const handleDropZoneOnLayout = React.useCallback<Game3ViewProps['handleDropZoneOnLayout']>((event) => {
+    setDropZoneValues(event.nativeEvent.layout);
   }, []);
 
-  const sameCardClicked = React.useCallback(id => {
-    return flippedCardIdList.includes(id)
-  }, [flippedCardIdList]);
+  const handleOnDragRelease = React.useCallback<Game3ViewProps['handleOnDragRelease']>((e, gesture) => {   
+    function increaseScore() {
+      setScore(score => score + 1);
+    };
+    if (isInsideDropZone(gesture)) {
+      increaseScore();
+    };
+  }, [dropZoneValues]);
+
+  React.useEffect(() => {
+    let timer = 0;
+    function flipAfter2Second() {
+      timer = setTimeout(() => setShouldFlip(true), 2000);
+      return timer;
+    };
+    flipAfter2Second();
+    return () => {
+      clearTimeout(timer);
+    }
+  }, []);
   
   if (loading) {
     return (
@@ -72,11 +73,11 @@ const Game3: React.ComponentType<Props> = (props) => {
 
   return (
     <Game3View 
-      cardList={cardList}
-      disabled={disabled}
-      flippedCardIdList={flippedCardIdList}
-      handleCardOnPress={handleCardOnPress}
-      solvedCardList={solvedCardList}
+      dropZoneValues={dropZoneValues}
+      handleDropZoneOnLayout={handleDropZoneOnLayout}
+      handleOnDragRelease={handleOnDragRelease}
+      isInsideDropZone={isInsideDropZone}
+      shouldFlip={shouldFlip}
     />
   )
 };

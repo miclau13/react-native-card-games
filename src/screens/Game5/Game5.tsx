@@ -1,4 +1,5 @@
 import React from 'react';
+import { PanResponderGestureState } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
@@ -16,53 +17,40 @@ type Props = {
 };
 
 interface Game5 {
-  cardList: Game5ViewProps['cardList'];
-  flippedCardIdList: Game5ViewProps['flippedCardIdList'];
-  handleCardOnPress: Game5ViewProps['handleCardOnPress'];
   loading: boolean;
-  solvedCardList: Game5ViewProps['solvedCardList'];
+  score: number;
 };
 
 const Game5: React.ComponentType<Props> = (props) => {
   const { navigation } = props;
 
-  const [cardList, setCardList] = React.useState<Game5['cardList']>(getDefaultDeck());
-  const [solvedCardList, setSolvedCardList] = React.useState<Game5['solvedCardList']>([]);
-  const [disabled, setDisabled] = React.useState(false);
-  const [flippedCardIdList, setFlippedCardIdList] = React.useState<Game5['flippedCardIdList']>([]);
+  const [dropZoneValues, setDropZoneValues] = React.useState<Game5ViewProps['dropZoneValues']>({
+    "height": 0,
+    "width": 0,
+    "x": 0,
+    "y": 0,
+  });
   const [loading] = React.useState<Game5['loading']>(false);
+  const [score, setScore] = React.useState<Game5['score']>(0);
 
-  const handleCardOnPress = React.useCallback<Game5['handleCardOnPress']>(id => {
-    setDisabled(true);
-    if (flippedCardIdList.length === 0) {
-      setFlippedCardIdList([id]);
-      setDisabled(false);
-    } else {
-      if (sameCardClicked(id)) return;
-      setFlippedCardIdList(list => [...list, id]);
-      if (isMatch(id)) {
-        setSolvedCardList(list => [ ...list, flippedCardIdList[0], id]);
-        resetCardList();
-      } else {
-        setTimeout(resetCardList, 500)
-      }
-    }
-  }, [flippedCardIdList]);
+  const isInsideDropZone = React.useCallback<Game5ViewProps['isInsideDropZone']>((gesture: PanResponderGestureState) => { 
+    const isInsideBoundY = gesture.moveY > dropZoneValues.y && gesture.moveY < dropZoneValues.y + dropZoneValues.height;
+    const isInsideBoundX = gesture.moveX > dropZoneValues.x && gesture.moveX < dropZoneValues.x + dropZoneValues.width;
+    return isInsideBoundY && isInsideBoundX;
+  }, [dropZoneValues]);
 
-  const isMatch = React.useCallback(id => {
-    const clickedCard = cardList.find(card => card.id === id);
-    const flippedCard = cardList.find(card => flippedCardIdList[0] === card.id);
-    return flippedCard?.type === clickedCard?.type;
-  }, [flippedCardIdList]);
-
-  const resetCardList = React.useCallback(() => {
-    setFlippedCardIdList([]);
-    setDisabled(false);
+  const handleDropZoneOnLayout = React.useCallback<Game5ViewProps['handleDropZoneOnLayout']>((event) => {
+    setDropZoneValues(event.nativeEvent.layout);
   }, []);
 
-  const sameCardClicked = React.useCallback(id => {
-    return flippedCardIdList.includes(id)
-  }, [flippedCardIdList]);
+  const handleOnDragRelease = React.useCallback<Game5ViewProps['handleOnDragRelease']>((e, gesture) => {   
+    function increaseScore() {
+      setScore(score => score + 1);
+    };
+    if (isInsideDropZone(gesture)) {
+      increaseScore();
+    };
+  }, [dropZoneValues]);
   
   if (loading) {
     return (
@@ -72,11 +60,10 @@ const Game5: React.ComponentType<Props> = (props) => {
 
   return (
     <Game5View 
-      cardList={cardList}
-      disabled={disabled}
-      flippedCardIdList={flippedCardIdList}
-      handleCardOnPress={handleCardOnPress}
-      solvedCardList={solvedCardList}
+      dropZoneValues={dropZoneValues}
+      handleDropZoneOnLayout={handleDropZoneOnLayout}
+      handleOnDragRelease={handleOnDragRelease}
+      isInsideDropZone={isInsideDropZone}
     />
   )
 };
