@@ -1,12 +1,11 @@
 import React from 'react';
 import { LayoutRectangle, PanResponderGestureState, View, ViewProps } from 'react-native';
-import { Icon } from 'react-native-elements';
 
-import Draggable, { DraggableProps } from '@components/Draggable';;
+import Draggable, { DraggableProps } from '@components/Draggable';
 import FaceUpCard, { FaceUpCardProps } from '@components/FaceUpCard';
+import GameHeader, { GameHeaderProps } from '@components/GameHeader';
 import GameBackground, { GameBackgroundProps } from '@components/GameBackground';
 import styles from './styles';
-
 
 export interface Game3ViewProps {
   dropZoneValues: LayoutRectangle;
@@ -14,6 +13,7 @@ export interface Game3ViewProps {
   handleOnDragRelease: Exclude<DraggableProps['onDragRelease'], undefined>;
   isInsideDropZone: (gestureState: PanResponderGestureState) => boolean;
   shouldFlip: boolean;
+  title: GameHeaderProps['title'];
 };
 
 interface Game3View {};
@@ -25,10 +25,14 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
     handleOnDragRelease,
     isInsideDropZone,
     shouldFlip,
+    title,
   } = props;
 
   return (
     <GameBackground>
+      <GameHeader 
+        title={title}
+      />
       <View style={styles.container}>
         <FaceUpCard 
           rank={shouldFlip ? "0" : "2"}

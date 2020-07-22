@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
-import { getDefaultDeck } from './constants';
+import { TITLE } from './constants';
 import Game5View, { Game5ViewProps } from './Game5View';
 
 type Game5ScreenNavigationProp = StackNavigationProp<
@@ -34,7 +34,7 @@ const Game5: React.ComponentType<Props> = (props) => {
   const [score, setScore] = React.useState<Game5['score']>(0);
 
   const isInsideDropZone = React.useCallback<Game5ViewProps['isInsideDropZone']>((gesture: PanResponderGestureState) => { 
-    const isInsideBoundY = gesture.moveY > dropZoneValues.y && gesture.moveY < dropZoneValues.y + dropZoneValues.height;
+    const isInsideBoundY = gesture.moveY > dropZoneValues.y && gesture.moveY - dropZoneValues.height < dropZoneValues.y + dropZoneValues.height;
     const isInsideBoundX = gesture.moveX > dropZoneValues.x && gesture.moveX < dropZoneValues.x + dropZoneValues.width;
     return isInsideBoundY && isInsideBoundX;
   }, [dropZoneValues]);
@@ -64,6 +64,7 @@ const Game5: React.ComponentType<Props> = (props) => {
       handleDropZoneOnLayout={handleDropZoneOnLayout}
       handleOnDragRelease={handleOnDragRelease}
       isInsideDropZone={isInsideDropZone}
+      title={TITLE}
     />
   )
 };

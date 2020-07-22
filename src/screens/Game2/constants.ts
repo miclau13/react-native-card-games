@@ -19,3 +19,5 @@ export const shuffleDeck = (cardList: ICard[]) => {
 export const getDefaultDeck = () => {
   return DefaultDeck;
 };
+
+export const TITLE = "撲克牌運算";

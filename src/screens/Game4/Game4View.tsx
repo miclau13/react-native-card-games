@@ -1,9 +1,10 @@
 import React from 'react';
 import { LayoutRectangle, PanResponderGestureState, View, ViewProps } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Image, Text } from 'react-native-elements';
 
 import Draggable, { DraggableProps } from '@components/Draggable';;
 import FaceUpCard, { FaceUpCardProps } from '@components/FaceUpCard';
+import GameHeader, { GameHeaderProps } from '@components/GameHeader';
 import GameBackground, { GameBackgroundProps } from '@components/GameBackground';
 import styles from './styles';
 
@@ -27,6 +28,17 @@ const Game4View: React.ComponentType<Game4ViewProps> = (props) => {
 
   return (
     <GameBackground>
+      <GameHeader
+        containerStyle={styles.gameHeaderContainer}
+      >
+        <Text h2>請選擇帶有</Text> 
+        <Image 
+          source={require('@assets/Cards/Clubs/Clubs.png')}
+          style={styles.titleImage}
+          resizeMode="contain"
+        />
+        <Text h2>的撲克牌</Text> 
+      </GameHeader>
       <View style={styles.container}>
         <FaceUpCard 
           rank="2"

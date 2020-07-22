@@ -8,12 +8,21 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
+  gameHeaderContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',  
+    justifyContent: 'center',
+  },
   horizontalViewBox1: {
     marginHorizontal: 8
   },
   horizontalViewBox2: {
     marginHorizontal: 16
   },
+  titleImage: {
+    height: 50,
+    width: 50, 
+  }
 });
 
 export default styles;

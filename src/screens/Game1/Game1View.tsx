@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Board, { BoardProps } from '@components/Board';
+import GameHeader, { GameHeaderProps } from '@components/GameHeader';
 import GameBackground, { GameBackgroundProps } from '@components/GameBackground';
 import styles from './styles';
 
@@ -10,6 +11,7 @@ export interface Game1ViewProps {
   flippedCardIdList: BoardProps['flippedCardIdList'];
   handleCardOnPress: BoardProps['handleCardOnPress'];
   solvedCardList: BoardProps['solvedCardList'];
+  title: GameHeaderProps['title'];
 };
 
 const Game1View: React.ComponentType<Game1ViewProps> = (props) => {
@@ -18,11 +20,15 @@ const Game1View: React.ComponentType<Game1ViewProps> = (props) => {
     disabled,
     flippedCardIdList,
     handleCardOnPress,
-    solvedCardList
+    solvedCardList,
+    title,
   } = props;
   
   return (
     <GameBackground>
+      <GameHeader 
+        title={title}
+      />
       <Board 
         cardList={cardList}
         disabled={disabled}

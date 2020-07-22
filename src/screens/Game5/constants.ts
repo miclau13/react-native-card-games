@@ -19,3 +19,5 @@ export const shuffleDeck = (cardList: ICard[]) => {
 export const getDefaultDeck = () => {
   return DefaultDeck;
 };
+
+export const TITLE = "請選擇正確的撲克牌";

@@ -19,3 +19,5 @@ export const shuffleDeck = (cardList: ICard[]) => {
 export const getDefaultDeck = () => {
   return DefaultDeck;
 };
+
+export const TITLE = "請記下撲克牌的次序";

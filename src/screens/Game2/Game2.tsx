@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
-import { getDefaultDeck } from './constants';
+import { TITLE } from './constants';
 import Game2View, { Game2ViewProps } from './Game2View';
 
 type Game2ScreenNavigationProp = StackNavigationProp<
@@ -64,6 +64,7 @@ const Game2: React.ComponentType<Props> = (props) => {
       handleDropZoneOnLayout={handleDropZoneOnLayout}
       handleOnDragRelease={handleOnDragRelease}
       isInsideDropZone={isInsideDropZone}
+      title={TITLE}
     />
   )
 };

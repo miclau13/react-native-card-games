@@ -101,8 +101,12 @@ export default function Draggable(props: DraggableProps) {
   const isDragging = React.useRef(false);
 
   const suitToDropZone = React.useCallback(() => {
+    console.log(" suitToDropZone dropZoneValues",dropZoneValues)
+    console.log("suitToDropZone x",x)
+    console.log("suitToDropZone y",y)
+    console.log("pan.current",pan.current)
     Animated.spring(pan.current, {
-      toValue: {x: dropZoneValues.x - x - 50, y: dropZoneValues.y - dropZoneValues.height - y - 48},
+      toValue: {x: dropZoneValues.x - x - 50, y: dropZoneValues.y - dropZoneValues.height - y - 8},
       // toValue: {x: 0, y: -324},
       // useNativeDriver: false,
     }).start();

@@ -2,17 +2,18 @@ import React from 'react';
 import { LayoutRectangle, PanResponderGestureState, View, ViewProps } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-import Draggable, { DraggableProps } from '@components/Draggable';;
+import Draggable, { DraggableProps } from '@components/Draggable';
 import FaceUpCard, { FaceUpCardProps } from '@components/FaceUpCard';
+import GameHeader, { GameHeaderProps } from '@components/GameHeader';
 import GameBackground, { GameBackgroundProps } from '@components/GameBackground';
 import styles from './styles';
-
 
 export interface Game2ViewProps {
   dropZoneValues: LayoutRectangle;
   handleDropZoneOnLayout: Exclude<ViewProps['onLayout'], undefined>;
   handleOnDragRelease: Exclude<DraggableProps['onDragRelease'], undefined>;
   isInsideDropZone: (gestureState: PanResponderGestureState) => boolean;
+  title: GameHeaderProps['title'];
 };
 
 interface Game2View {};
@@ -23,10 +24,14 @@ const Game2View: React.ComponentType<Game2ViewProps> = (props) => {
     handleDropZoneOnLayout,
     handleOnDragRelease,
     isInsideDropZone,
+    title,
   } = props;
 
   return (
     <GameBackground>
+      <GameHeader 
+        title={title}
+      />
       <View style={styles.container}>
         <FaceUpCard 
           rank="5"

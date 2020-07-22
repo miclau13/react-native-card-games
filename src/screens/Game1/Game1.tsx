@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
-import { getDefaultDeck } from './constants';
+import { getDefaultDeck, TITLE } from './constants';
 import Game1View, { Game1ViewProps } from './Game1View';
 
 type Game1ScreenNavigationProp = StackNavigationProp<
@@ -77,6 +77,7 @@ const Game1: React.ComponentType<Props> = (props) => {
       flippedCardIdList={flippedCardIdList}
       handleCardOnPress={handleCardOnPress}
       solvedCardList={solvedCardList}
+      title={TITLE}
     />
   )
 };

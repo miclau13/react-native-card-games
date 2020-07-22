@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
   },
   root: {
-    padding: 16,
+    padding: 4,
+    // backgroundColor: 'pink'
   }
 });
 
