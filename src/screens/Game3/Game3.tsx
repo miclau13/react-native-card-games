@@ -20,13 +20,26 @@ type Props = {
 interface Game3 {
   loading: boolean;
   score: number;
+  solvedCardIDList: number[];
 };
 
 const Game3: React.ComponentType<Props> = (props) => {
   const { navigation } = props;
 
   const [cardDeck, setCardDeck] = React.useState<Game3ViewProps['cardDeck']>(getRandomCardDeck(3));
-  const [dropZoneValues, setDropZoneValues] = React.useState<Game3ViewProps['dropZoneValues']>({
+  const [dropZone1Values, setDropZone1Values] = React.useState<Game3ViewProps['dropZone1Values']>({
+    "height": 0,
+    "width": 0,
+    "x": 0,
+    "y": 0,
+  });
+  const [dropZone2Values, setDropZone2Values] = React.useState<Game3ViewProps['dropZone2Values']>({
+    "height": 0,
+    "width": 0,
+    "x": 0,
+    "y": 0,
+  });
+  const [dropZone3Values, setDropZone3Values] = React.useState<Game3ViewProps['dropZone3Values']>({
     "height": 0,
     "width": 0,
     "x": 0,
@@ -34,16 +47,37 @@ const Game3: React.ComponentType<Props> = (props) => {
   });
   const [loading] = React.useState<Game3['loading']>(false);
   const [score, setScore] = React.useState<Game3['score']>(0);
+  const [solvedCardIDList, setSolvedCardIDList] = React.useState<Game3['solvedCardIDList']>([]);
   const [shouldFlip, setShouldFlip] = React.useState<Game3ViewProps['shouldFlip']>(false);
 
-  const isInsideDropZone = React.useCallback<Game3ViewProps['isInsideDropZone']>((gesture: PanResponderGestureState) => { 
-    const isInsideBoundY = gesture.moveY > dropZoneValues.y && gesture.moveY < dropZoneValues.y + dropZoneValues.height;
-    const isInsideBoundX = gesture.moveX > dropZoneValues.x && gesture.moveX < dropZoneValues.x + dropZoneValues.width;
+  const isInsideDropZone1 = React.useCallback<Game3ViewProps['isInsideDropZone1']>((gesture: PanResponderGestureState) => { 
+    const isInsideBoundY = gesture.moveY > dropZone1Values.y && gesture.moveY < dropZone1Values.y + dropZone1Values.height;
+    const isInsideBoundX = gesture.moveX > dropZone1Values.x && gesture.moveX < dropZone1Values.x + dropZone1Values.width;
     return isInsideBoundY && isInsideBoundX;
-  }, [dropZoneValues]);
+  }, [dropZone1Values]);
 
-  const handleDropZoneOnLayout = React.useCallback<Game3ViewProps['handleDropZoneOnLayout']>((event) => {
-    setDropZoneValues(event.nativeEvent.layout);
+  const isInsideDropZone2 = React.useCallback<Game3ViewProps['isInsideDropZone2']>((gesture: PanResponderGestureState) => { 
+    const isInsideBoundY = gesture.moveY > dropZone2Values.y && gesture.moveY < dropZone2Values.y + dropZone2Values.height;
+    const isInsideBoundX = gesture.moveX > dropZone2Values.x && gesture.moveX < dropZone2Values.x + dropZone2Values.width;
+    return isInsideBoundY && isInsideBoundX;
+  }, [dropZone2Values]);
+
+  const isInsideDropZone3 = React.useCallback<Game3ViewProps['isInsideDropZone3']>((gesture: PanResponderGestureState) => { 
+    const isInsideBoundY = gesture.moveY > dropZone3Values.y && gesture.moveY < dropZone3Values.y + dropZone3Values.height;
+    const isInsideBoundX = gesture.moveX > dropZone3Values.x && gesture.moveX < dropZone3Values.x + dropZone3Values.width;
+    return isInsideBoundY && isInsideBoundX;
+  }, [dropZone3Values]);
+
+  const handleDropZone1OnLayout = React.useCallback<Game3ViewProps['handleDropZone1OnLayout']>((event) => {
+    setDropZone1Values(event.nativeEvent.layout);
+  }, []);
+
+  const handleDropZone2OnLayout = React.useCallback<Game3ViewProps['handleDropZone2OnLayout']>((event) => {
+    setDropZone2Values(event.nativeEvent.layout);
+  }, []);
+
+  const handleDropZone3OnLayout = React.useCallback<Game3ViewProps['handleDropZone3OnLayout']>((event) => {
+    setDropZone3Values(event.nativeEvent.layout);
   }, []);
 
   const handleOnDragRelease = React.useCallback<Game3ViewProps['handleOnDragRelease']>((rank, suit) => (e, gesture) => {   
@@ -55,16 +89,46 @@ const Game3: React.ComponentType<Props> = (props) => {
       setCardDeck(getRandomCardDeck(3));
     };
 
-    if (isInsideDropZone(gesture)) {
-      // //If correct
-      // if (Number(rank) === cardDeck.answerPoint) {
-      //   increaseScore();
-      // } else {
+    if (isInsideDropZone1(gesture)) {
+      // If correct
+      if (cardDeck.questionDeck[0].rank === rank) {
+        // increaseScore();
+        setSolvedCardIDList(list => [ ...list, 0]);
+        if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
+          startNextTurn();
+        };
+      } else {
 
-      // };
-      startNextTurn();
+      };
+      // startNextTurn();
+    } else if (isInsideDropZone2(gesture)) {
+      // If correct
+      if (cardDeck.questionDeck[1].rank === rank) {
+        // increaseScore();
+        setSolvedCardIDList(list => [ ...list, 1]);
+        if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
+          startNextTurn();
+        };
+      } else {
+
+      };
+
+      // startNextTurn();
+    } else if (isInsideDropZone3(gesture)) {
+      // If correct
+      if (cardDeck.questionDeck[2].rank === rank) {
+        // increaseScore();
+        setSolvedCardIDList(list => [ ...list, 2]);
+        if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
+          startNextTurn();
+        };
+      } else {
+
+      };
+
+      // startNextTurn();
     };
-  }, [dropZoneValues]);
+  }, [cardDeck, dropZone1Values, dropZone2Values, dropZone2Values, solvedCardIDList ]);
 
   React.useEffect(() => {
     let timer = 0;
@@ -87,10 +151,16 @@ const Game3: React.ComponentType<Props> = (props) => {
   return (
     <Game3View 
       cardDeck={cardDeck}
-      dropZoneValues={dropZoneValues}
-      handleDropZoneOnLayout={handleDropZoneOnLayout}
+      dropZone1Values={dropZone1Values}
+      dropZone2Values={dropZone2Values}
+      dropZone3Values={dropZone3Values}
+      handleDropZone1OnLayout={handleDropZone1OnLayout}
+      handleDropZone2OnLayout={handleDropZone2OnLayout}
+      handleDropZone3OnLayout={handleDropZone3OnLayout}
       handleOnDragRelease={handleOnDragRelease}
-      isInsideDropZone={isInsideDropZone}
+      isInsideDropZone1={isInsideDropZone1}
+      isInsideDropZone2={isInsideDropZone2}
+      isInsideDropZone3={isInsideDropZone3}
       shouldFlip={shouldFlip}
       title={TITLE}
     />

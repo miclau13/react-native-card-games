@@ -55,6 +55,7 @@ export interface DraggableProps {
     // for dropZone
     dropZoneValues: LayoutRectangle;
     isInsideDropZone: (gestureState: PanResponderGestureState) => boolean;
+    shouldReset?: boolean;
   };
 
 export default function Draggable(props: DraggableProps) {
@@ -87,6 +88,7 @@ export default function Draggable(props: DraggableProps) {
 
     dropZoneValues,
     isInsideDropZone,
+    shouldReset = true,
   } = props;
 
   // The Animated object housing our xy value so that we can spring back
@@ -159,13 +161,13 @@ export default function Draggable(props: DraggableProps) {
           // pan.current.flattenOffset();
           suitToDropZone();
           // setTimeout(reversePosition, 500)
-          resetPosition();
+          shouldReset && resetPosition();
         } else {
           reversePosition();
         }
       }
     },
-    [onDragRelease, shouldReverse, onRelease, reversePosition],
+    [onDragRelease, shouldReverse, shouldReset, onRelease, reversePosition],
   );
 
   const onPanResponderGrant = React.useCallback(
