@@ -1,9 +1,58 @@
 import { FaceUpCardProps } from './FaceUpCard';
 
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+export const getRandomRank = () => {
+  const int = getRandomInt(13) + 1;
+  switch (int) {
+    case 1: 
+      return '1';
+    case 2: 
+      return '2';
+    case 3: 
+      return '3';
+    case 4: 
+      return '4';
+    case 5: 
+      return '5';
+    case 6: 
+      return '6';
+    case 7: 
+    return '7';
+    case 8: 
+      return '8';
+    case 9: 
+      return '9';
+    case 1: 
+      return '10';
+    case 11:
+      return 'Jack';
+    case 12:
+      return 'Queen';
+    default:
+      return 'King';
+  }
+};
+
+export const getRandomSuit = () => {
+  const int = getRandomInt(4);
+  switch (int) {
+    case 0:
+      return 'Clubs';
+    case 1:
+      return 'Diamonds';
+    case 2:
+      return 'Hearts';
+    default:
+      return 'Spades';
+  }
+};
+
 export const getCardImageBySuitAndRank = (rank: FaceUpCardProps['rank'], suit: FaceUpCardProps['suit']) => {
   const imageLocation = `${suit}_${rank}`;
   let image = require('@assets/Cards/Back_Side_Card.jpg');
-  // let image =""
   switch (imageLocation) {
     case 'Clubs_1':
       image = require('@assets/Cards/Clubs/Clubs_1.png');

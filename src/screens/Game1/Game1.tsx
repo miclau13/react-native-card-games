@@ -3,8 +3,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
-import { getDefaultDeck, TITLE } from './constants';
+import { getRandomDeckInPair, TITLE } from './constants';
 import Game1View, { Game1ViewProps } from './Game1View';
+import { shuffleDeck } from 'screens/Home/constants';
 
 type Game1ScreenNavigationProp = StackNavigationProp<
   HomeStackParamList,
@@ -16,23 +17,21 @@ type Props = {
 };
 
 interface Game1 {
-  cardList: Game1ViewProps['cardList'];
-  flippedCardIdList: Game1ViewProps['flippedCardIdList'];
-  handleCardOnPress: Game1ViewProps['handleCardOnPress'];
   loading: boolean;
-  solvedCardList: Game1ViewProps['solvedCardList'];
+  score: number;
 };
 
 const Game1: React.ComponentType<Props> = (props) => {
   const { navigation } = props;
 
-  const [cardList, setCardList] = React.useState<Game1['cardList']>(getDefaultDeck());
-  const [solvedCardList, setSolvedCardList] = React.useState<Game1['solvedCardList']>([]);
-  const [disabled, setDisabled] = React.useState(false);
-  const [flippedCardIdList, setFlippedCardIdList] = React.useState<Game1['flippedCardIdList']>([]);
+  const [cardList, setCardList] = React.useState<Game1ViewProps['cardList']>(getRandomDeckInPair(3));
+  const [solvedCardList, setSolvedCardList] = React.useState<Game1ViewProps['solvedCardList']>([]);
+  const [disabled, setDisabled] = React.useState<Game1ViewProps['disabled']>(false);
+  const [flippedCardIdList, setFlippedCardIdList] = React.useState<Game1ViewProps['flippedCardIdList']>([]);
   const [loading] = React.useState<Game1['loading']>(false);
+  const [score, setScore] = React.useState<Game1['score']>(0);
 
-  const handleCardOnPress = React.useCallback<Game1['handleCardOnPress']>(id => {
+  const handleCardOnPress = React.useCallback<Game1ViewProps['handleCardOnPress']>(id => {
     setDisabled(true);
     if (flippedCardIdList.length === 0) {
       setFlippedCardIdList([id]);
@@ -52,7 +51,7 @@ const Game1: React.ComponentType<Props> = (props) => {
   const isMatch = React.useCallback(id => {
     const clickedCard = cardList.find(card => card.id === id);
     const flippedCard = cardList.find(card => flippedCardIdList[0] === card.id);
-    return flippedCard?.type === clickedCard?.type;
+    return (flippedCard?.rank === clickedCard?.rank) && (flippedCard?.suit === clickedCard?.suit);
   }, [flippedCardIdList]);
 
   const resetCardList = React.useCallback(() => {
@@ -63,7 +62,29 @@ const Game1: React.ComponentType<Props> = (props) => {
   const sameCardClicked = React.useCallback(id => {
     return flippedCardIdList.includes(id)
   }, [flippedCardIdList]);
+
+  React.useEffect(() => {
+
+    function startNextTurn() {
+      setCardList(shuffleDeck(getRandomDeckInPair(3)));
+      setSolvedCardList([]);
+      setFlippedCardIdList([]);
+      setScore(score => score + 1);
+    };
+
+    function checkShouldGoToNextTurn() {
+      // Condition varies on level
+      if (solvedCardList.length === 6) {
+        startNextTurn();
+      };
+    };
+
+    checkShouldGoToNextTurn();
+  }, [solvedCardList]);
   
+  console.log("score", score)
+  console.log("cardList", cardList)
+
   if (loading) {
     return (
       <LoadingComponent />

@@ -32,9 +32,9 @@ const Board: React.ComponentType<BoardProps> = (props) => {
                 handleCardOnPress={handleCardOnPress}
                 id={card.id}        
                 isFlipped={flippedCardIdList.includes(card.id)}
-                // key={card.id}
+                rank={card.rank}
+                suit={card.suit}
                 solved={solvedCardList.includes(card.id)}
-                type={card.type}
               />
               <View style={{ marginLeft: ((index+1) % 3) ? 0 : 2000 }} />
             </React.Fragment>

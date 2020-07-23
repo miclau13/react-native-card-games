@@ -23,7 +23,7 @@ const Game1View: React.ComponentType<Game1ViewProps> = (props) => {
     solvedCardList,
     title,
   } = props;
-  
+
   return (
     <GameBackground>
       <GameHeader 

@@ -1,23 +1,20 @@
 import { shuffle } from 'lodash';
 import { ICard } from '@components/Card';
 
-const DefaultDeck = [
-  { id: "0", type: 'diamondsKing' },
-  { id: "1", type: 'spadesJack' },
-  { id: "2", type: 'heartQueen' },
-  { id: "3", type: 'spadesJack' },
-  { id: "4", type: 'heartQueen' },
-  { id: "5", type: 'diamondsKing' },
-  // { id: "6", type: 'sanitizer' },
-  // { id: "7", type: 'sanitizer' },
-];
+import { getRandomRank, getRandomSuit } from '@components/FaceUpCard/utils';
 
 export const shuffleDeck = (cardList: ICard[]) => {
   return shuffle(cardList);
 };
 
-export const getDefaultDeck = () => {
-  return DefaultDeck;
+export const getRandomDeckInPair = (pair: number) => {
+  const cardList = Array.from(Array(pair), (_, i) => {
+    return { id: `${i}`, rank: getRandomRank(), suit: getRandomSuit() }
+  });
+  const deck = [...cardList, ...cardList].map((card, index) => {
+    return { ...card, id: `${index}`}
+  })
+  return deck;
 };
 
 export const TITLE = "撲克牌配對";
