@@ -63,7 +63,6 @@ const Game2: React.ComponentType<Props> = (props) => {
       };
       startNextTurn();
     };
-
     
   }, [cardDeck, dropZoneValues]);
   

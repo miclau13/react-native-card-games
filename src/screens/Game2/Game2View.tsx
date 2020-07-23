@@ -13,7 +13,7 @@ type CardDeck = {
   answerDeck: FaceUpCardProps[];
   answerPoint: number;
   questionDeck: FaceUpCardProps[];
-}
+};
 
 export interface Game2ViewProps {
   cardDeck: CardDeck;

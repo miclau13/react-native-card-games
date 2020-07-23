@@ -5,6 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import LoadingComponent from '@components/Loading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
 import { TITLE } from './constants';
+import { getRandomCardDeck } from './utils';
 import Game3View, { Game3ViewProps } from './Game3View';
 
 type Game3ScreenNavigationProp = StackNavigationProp<
@@ -24,6 +25,7 @@ interface Game3 {
 const Game3: React.ComponentType<Props> = (props) => {
   const { navigation } = props;
 
+  const [cardDeck, setCardDeck] = React.useState<Game3ViewProps['cardDeck']>(getRandomCardDeck(3));
   const [dropZoneValues, setDropZoneValues] = React.useState<Game3ViewProps['dropZoneValues']>({
     "height": 0,
     "width": 0,
@@ -44,12 +46,23 @@ const Game3: React.ComponentType<Props> = (props) => {
     setDropZoneValues(event.nativeEvent.layout);
   }, []);
 
-  const handleOnDragRelease = React.useCallback<Game3ViewProps['handleOnDragRelease']>((e, gesture) => {   
+  const handleOnDragRelease = React.useCallback<Game3ViewProps['handleOnDragRelease']>((rank, suit) => (e, gesture) => {   
     function increaseScore() {
       setScore(score => score + 1);
     };
+
+    function startNextTurn() {
+      setCardDeck(getRandomCardDeck(3));
+    };
+
     if (isInsideDropZone(gesture)) {
-      increaseScore();
+      // //If correct
+      // if (Number(rank) === cardDeck.answerPoint) {
+      //   increaseScore();
+      // } else {
+
+      // };
+      startNextTurn();
     };
   }, [dropZoneValues]);
 
@@ -73,6 +86,7 @@ const Game3: React.ComponentType<Props> = (props) => {
 
   return (
     <Game3View 
+      cardDeck={cardDeck}
       dropZoneValues={dropZoneValues}
       handleDropZoneOnLayout={handleDropZoneOnLayout}
       handleOnDragRelease={handleOnDragRelease}
