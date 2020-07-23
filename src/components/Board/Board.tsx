@@ -6,18 +6,22 @@ import styles from './styles';
 
 export interface BoardProps {
   cardList: ICard[];
+  cardPerRow: number;
   disabled: CardProps['disabled'];
   flippedCardIdList: string[];
   handleCardOnPress: CardProps['handleCardOnPress'];
+  initialFaceDirection: CardProps['initialFaceDirection'];
   solvedCardList: string[];
 };
 
 const Board: React.ComponentType<BoardProps> = (props) => {
   const {
     cardList,
+    cardPerRow,
     disabled,
     flippedCardIdList,
     handleCardOnPress,
+    initialFaceDirection,
     solvedCardList
   } = props;
 
@@ -31,12 +35,13 @@ const Board: React.ComponentType<BoardProps> = (props) => {
                 disabled={disabled || solvedCardList.includes(card.id)}
                 handleCardOnPress={handleCardOnPress}
                 id={card.id}        
+                initialFaceDirection={initialFaceDirection}
                 isFlipped={flippedCardIdList.includes(card.id)}
                 rank={card.rank}
                 suit={card.suit}
                 solved={solvedCardList.includes(card.id)}
               />
-              <View style={{ marginLeft: ((index+1) % 3) ? 0 : 2000 }} />
+              <View style={{ marginLeft: ((index+1) % cardPerRow) ? 0 : 2000 }} />
             </React.Fragment>
           )
         })

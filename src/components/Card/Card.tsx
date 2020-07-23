@@ -2,25 +2,27 @@ import React from 'react';
 import { Animated, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 import { Image } from 'react-native-elements';
 
+import { FaceUpCardProps } from '@components/FaceUpCard'; 
 import { getCardImageByRankAndSuit } from '@components/FaceUpCard/utils'; 
 import styles from './styles';
 
 const BACKSIDE_CARD_IMAGE = require('@assets/Cards/Back_Side_Card.jpg');
 
+type FaceDirection = "UP" | "DOWN";
+export interface ICard {
+  id: string;
+  rank: FaceUpCardProps['rank'];
+  suit: FaceUpCardProps['suit'];
+};
 export interface CardProps {
   disabled: boolean;
   id: string;
   handleCardOnPress(id: string): void;
+  initialFaceDirection: FaceDirection;
   isFlipped: boolean;
-  rank: string;
-  suit: string;
+  rank: ICard['rank'];
+  suit: ICard['suit'];
   solved: boolean;
-};
-
-export interface ICard {
-  id: string;
-  rank: string;
-  suit: string;
 };
 
 interface Card { 
@@ -31,6 +33,7 @@ const Card: React.ComponentType<CardProps> = (props) => {
   const {
     disabled,
     id,
+    initialFaceDirection,
     isFlipped,
     handleCardOnPress,
     solved,
@@ -39,11 +42,12 @@ const Card: React.ComponentType<CardProps> = (props) => {
   } = props;
 
   const imageSrc = React.useMemo(() => {
-    const frontImage = getCardImageByRankAndSuit(rank, suit);
-    return isFlipped || solved ? frontImage : BACKSIDE_CARD_IMAGE
-  }
-    
-  , [BACKSIDE_CARD_IMAGE, isFlipped, rank, suit, solved]);
+    const initialImage = initialFaceDirection === "DOWN" ? BACKSIDE_CARD_IMAGE : getCardImageByRankAndSuit(rank, suit);
+    if (isFlipped || solved) {
+      return initialFaceDirection === "UP" ? BACKSIDE_CARD_IMAGE : getCardImageByRankAndSuit(rank, suit);
+    } 
+    return initialImage;
+  }, [BACKSIDE_CARD_IMAGE, initialFaceDirection, isFlipped, rank, solved, suit]);
 
   let flipAnimatedValue = new Animated.Value(0);
   let val = 0;

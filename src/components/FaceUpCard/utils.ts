@@ -58,6 +58,25 @@ export const getRandomSuit: (specifySuit?: number) => FaceUpCardProps['suit'] = 
   }
 };
 
+export const getCardImageBySuit = (suit: FaceUpCardProps['suit']) => {
+  let image = require('@assets/Cards/Back_Side_Card.jpg');
+  switch (suit) {
+    case 'Clubs':
+      image = require('@assets/Cards/Clubs/Clubs.png');
+      break;
+    case 'Diamonds':
+      image = require('@assets/Cards/Diamonds/Diamonds.png');
+      break;    
+    case 'Hearts':
+      image = require('@assets/Cards/Hearts/Hearts.png');
+      break;    
+    case 'Spades':
+      image = require('@assets/Cards/Spades/Spades.png');
+      break;    
+  };
+  return image;
+};
+
 export const getCardImageByRankAndSuit = (rank: FaceUpCardProps['rank'], suit: FaceUpCardProps['suit']) => {
   const imageLocation = `${suit}_${rank}`;
   let image = require('@assets/Cards/Back_Side_Card.jpg');

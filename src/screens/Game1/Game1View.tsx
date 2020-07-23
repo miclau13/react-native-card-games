@@ -31,9 +31,11 @@ const Game1View: React.ComponentType<Game1ViewProps> = (props) => {
       />
       <Board 
         cardList={cardList}
+        cardPerRow={3}
         disabled={disabled}
         flippedCardIdList={flippedCardIdList}
         handleCardOnPress={handleCardOnPress}
+        initialFaceDirection="DOWN"
         solvedCardList={solvedCardList}
       />
     </GameBackground>
