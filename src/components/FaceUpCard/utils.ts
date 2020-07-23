@@ -1,11 +1,19 @@
+import { shuffle } from 'lodash';
+
 import { FaceUpCardProps } from './FaceUpCard';
 
-function getRandomInt(max: number) {
-  return Math.floor(Math.random() * Math.floor(max));
+export const shuffleDeck = (cardList: FaceUpCardProps[]) => {
+  return shuffle(cardList);
+};
+
+function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-export const getRandomRank = () => {
-  const int = getRandomInt(13) + 1;
+export const getRandomRank: (min?: number, max?: number) => FaceUpCardProps['rank'] = (min = 1, max = 13) => {
+  const int = getRandomInt(min, max);
   switch (int) {
     case 1: 
       return '1';
@@ -36,8 +44,8 @@ export const getRandomRank = () => {
   }
 };
 
-export const getRandomSuit = () => {
-  const int = getRandomInt(4);
+export const getRandomSuit: (specifySuit?: number) => FaceUpCardProps['suit'] = (specifySuit) => {
+  const int = specifySuit || getRandomInt(0, 4);
   switch (int) {
     case 0:
       return 'Clubs';
@@ -50,7 +58,7 @@ export const getRandomSuit = () => {
   }
 };
 
-export const getCardImageBySuitAndRank = (rank: FaceUpCardProps['rank'], suit: FaceUpCardProps['suit']) => {
+export const getCardImageByRankAndSuit = (rank: FaceUpCardProps['rank'], suit: FaceUpCardProps['suit']) => {
   const imageLocation = `${suit}_${rank}`;
   let image = require('@assets/Cards/Back_Side_Card.jpg');
   switch (imageLocation) {

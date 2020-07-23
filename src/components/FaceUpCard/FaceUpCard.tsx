@@ -3,7 +3,7 @@ import { TouchableOpacityProps, View } from 'react-native';
 import { Image } from 'react-native-elements';
 
 import styles from './styles';
-import { getCardImageBySuitAndRank } from './utils';
+import { getCardImageByRankAndSuit } from './utils';
 
 type CardRank = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'Jack' | 'Queen' | 'King';
 type CardSuit = 'Clubs' | 'Diamonds' | 'Hearts' | 'Spades';
@@ -24,7 +24,7 @@ const FaceUpCard: React.ComponentType<FaceUpCardProps> = (props) => {
   } = props;
 
   const imageSrc = React.useMemo(() => {
-    return getCardImageBySuitAndRank(rank, suit);
+    return getCardImageByRankAndSuit(rank, suit);
   }, [rank, suit]);
 
   return (

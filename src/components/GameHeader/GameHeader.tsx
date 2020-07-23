@@ -19,7 +19,7 @@ const GameHeader: React.ComponentType<GameHeaderProps> = (props) => {
   } = props;
 
   // const imageSrc = React.useMemo(() => {
-  //   return getCardImageBySuitAndRank(rank, suit);
+  //   return getCardImageByRankAndSuit(rank, suit);
   // }, [rank, suit]);
 
   return (

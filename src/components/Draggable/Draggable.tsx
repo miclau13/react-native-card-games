@@ -101,10 +101,10 @@ export default function Draggable(props: DraggableProps) {
   const isDragging = React.useRef(false);
 
   const suitToDropZone = React.useCallback(() => {
-    console.log(" suitToDropZone dropZoneValues",dropZoneValues)
-    console.log("suitToDropZone x",x)
-    console.log("suitToDropZone y",y)
-    console.log("pan.current",pan.current)
+    // console.log(" suitToDropZone dropZoneValues",dropZoneValues)
+    // console.log("suitToDropZone x",x)
+    // console.log("suitToDropZone y",y)
+    // console.log("pan.current",pan.current)
     Animated.spring(pan.current, {
       toValue: {x: dropZoneValues.x - x - 50, y: dropZoneValues.y - dropZoneValues.height - y - 8},
       // toValue: {x: 0, y: -324},
@@ -137,6 +137,14 @@ export default function Draggable(props: DraggableProps) {
     }).start();
   }, [pan]);
 
+  const resetPosition = React.useCallback(() => {
+    Animated.timing(pan.current, {
+      toValue: {x: 0, y: 0},
+      useNativeDriver: false,
+      duration: 500
+    }).start();
+  }, [pan]);
+
   const onPanResponderRelease = React.useCallback(
     (e: GestureResponderEvent, gestureState: PanResponderGestureState) => {
       isDragging.current = false;
@@ -150,6 +158,8 @@ export default function Draggable(props: DraggableProps) {
         if (isInsideDropZone(gestureState)) {
           // pan.current.flattenOffset();
           suitToDropZone();
+          // setTimeout(reversePosition, 500)
+          resetPosition();
         } else {
           reversePosition();
         }

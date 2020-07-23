@@ -3,9 +3,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
-import { getRandomDeckInPair, TITLE } from './constants';
+import { TITLE} from './constants';
+import { getRandomDeckInPair, shuffleDeck } from './utils';
 import Game1View, { Game1ViewProps } from './Game1View';
-import { shuffleDeck } from 'screens/Home/constants';
 
 type Game1ScreenNavigationProp = StackNavigationProp<
   HomeStackParamList,
@@ -81,9 +81,6 @@ const Game1: React.ComponentType<Props> = (props) => {
 
     checkShouldGoToNextTurn();
   }, [solvedCardList]);
-  
-  console.log("score", score)
-  console.log("cardList", cardList)
 
   if (loading) {
     return (

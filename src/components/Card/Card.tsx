@@ -2,7 +2,7 @@ import React from 'react';
 import { Animated, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 import { Image } from 'react-native-elements';
 
-import { getCardImageBySuitAndRank } from '@components/FaceUpCard/utils'; 
+import { getCardImageByRankAndSuit } from '@components/FaceUpCard/utils'; 
 import styles from './styles';
 
 const BACKSIDE_CARD_IMAGE = require('@assets/Cards/Back_Side_Card.jpg');
@@ -39,7 +39,7 @@ const Card: React.ComponentType<CardProps> = (props) => {
   } = props;
 
   const imageSrc = React.useMemo(() => {
-    const frontImage = getCardImageBySuitAndRank(rank, suit);
+    const frontImage = getCardImageByRankAndSuit(rank, suit);
     return isFlipped || solved ? frontImage : BACKSIDE_CARD_IMAGE
   }
     
