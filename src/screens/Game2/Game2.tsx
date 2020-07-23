@@ -58,10 +58,10 @@ const Game2: React.ComponentType<Props> = (props) => {
       //If correct
       if (Number(rank) === cardDeck.answerPoint) {
         increaseScore();
+        startNextTurn();
       } else {
 
       };
-      startNextTurn();
     };
     
   }, [cardDeck, dropZoneValues]);

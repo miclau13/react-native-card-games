@@ -132,10 +132,6 @@ const Game4: React.ComponentType<Props> = (props) => {
     checkShouldGoToNextTurn();
   }, [cardList, requiredSuit, solvedCardList]);
 
-  console.log("solvedCardList outside",solvedCardList)
-  console.log("requiredSuit outside",requiredSuit)
-  console.log("cardList outside",cardList)
-
   if (loading) {
     return (
       <LoadingComponent />

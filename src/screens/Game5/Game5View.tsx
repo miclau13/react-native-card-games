@@ -3,15 +3,23 @@ import { LayoutRectangle, PanResponderGestureState, View, ViewProps } from 'reac
 
 import Draggable, { DraggableProps } from '@components/Draggable';
 import FaceUpCard, { FaceUpCardProps } from '@components/FaceUpCard';
+import { getCardImageByRankAndSuit } from '@components/FaceUpCard/utils';
 import GameHeader, { GameHeaderProps } from '@components/GameHeader';
 import GameBackground, { GameBackgroundProps } from '@components/GameBackground';
 import styles from './styles';
 
+type CardDeck = {
+  answerDeck: FaceUpCardProps[];
+  answerPoint: number;
+  answerRank: FaceUpCardProps['rank'];
+  questionDeck: FaceUpCardProps[];
+};
 
 export interface Game5ViewProps {
+  cardDeck: CardDeck;
   dropZoneValues: LayoutRectangle;
   handleDropZoneOnLayout: Exclude<ViewProps['onLayout'], undefined>;
-  handleOnDragRelease: Exclude<DraggableProps['onDragRelease'], undefined>;
+  handleOnDragRelease(rank: FaceUpCardProps['rank']): Exclude<DraggableProps['onDragRelease'], undefined>;
   isInsideDropZone: (gestureState: PanResponderGestureState) => boolean;
   title: GameHeaderProps['title'];
 };
@@ -20,6 +28,7 @@ interface Game5View {};
 
 const Game5View: React.ComponentType<Game5ViewProps> = (props) => {
   const { 
+    cardDeck,
     dropZoneValues,
     handleDropZoneOnLayout,
     handleOnDragRelease,
@@ -34,13 +43,13 @@ const Game5View: React.ComponentType<Game5ViewProps> = (props) => {
       />
       <View style={styles.container}>
         <FaceUpCard 
-          rank="2"
-          suit="Hearts"
+          rank={cardDeck.questionDeck[0].rank}
+          suit={cardDeck.questionDeck[0].suit}
         />
         <View style={styles.horizontalViewBox1} />
         <FaceUpCard 
-          rank="3"
-          suit="Hearts"
+          rank={cardDeck.questionDeck[1].rank}
+          suit={cardDeck.questionDeck[1].suit}
         />
         <View style={styles.horizontalViewBox1} />
         <View
@@ -54,43 +63,43 @@ const Game5View: React.ComponentType<Game5ViewProps> = (props) => {
         </View>
         <View style={styles.horizontalViewBox1} />
         <FaceUpCard 
-          rank="5"
-          suit="Hearts"
+          rank={cardDeck.questionDeck[3].rank}
+          suit={cardDeck.questionDeck[3].suit}
         />
         <View style={styles.horizontalViewBox1} />
         <FaceUpCard 
-          rank="6"
-          suit="Hearts"
+          rank={cardDeck.questionDeck[4].rank}
+          suit={cardDeck.questionDeck[4].suit}
         />
       </View>
       <View style={styles.container}>
         <Draggable 
           shouldReverse
-          imageSource={require('@assets/Cards/Hearts/Hearts_10.png')}
+          imageSource={getCardImageByRankAndSuit(cardDeck.answerDeck[0].rank, cardDeck.answerDeck[0].suit)}
           renderSize={300} 
           x={150}
           y={0}
-          onDragRelease={handleOnDragRelease}
+          onDragRelease={handleOnDragRelease(cardDeck.answerDeck[0].rank)}
           dropZoneValues={dropZoneValues}
           isInsideDropZone={isInsideDropZone}
         />
         <Draggable 
           shouldReverse
-          imageSource={require('@assets/Cards/Hearts/Hearts_9.png')}
+          imageSource={getCardImageByRankAndSuit(cardDeck.answerDeck[1].rank, cardDeck.answerDeck[1].suit)}
           renderSize={300} 
           x={450}
           y={0}
-          onDragRelease={handleOnDragRelease}
+          onDragRelease={handleOnDragRelease(cardDeck.answerDeck[1].rank)}
           dropZoneValues={dropZoneValues}
           isInsideDropZone={isInsideDropZone}
         />
         <Draggable 
           shouldReverse
-          imageSource={require('@assets/Cards/Hearts/Hearts_4.png')}
+          imageSource={getCardImageByRankAndSuit(cardDeck.answerDeck[2].rank, cardDeck.answerDeck[2].suit)}
           renderSize={300} 
           x={750}
           y={0}
-          onDragRelease={handleOnDragRelease}
+          onDragRelease={handleOnDragRelease(cardDeck.answerDeck[2].rank)}
           dropZoneValues={dropZoneValues}
           isInsideDropZone={isInsideDropZone}
         />
