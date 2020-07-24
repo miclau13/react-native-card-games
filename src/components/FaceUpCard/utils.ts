@@ -28,7 +28,7 @@ export const getRandomRank: (min?: number, max?: number) => FaceUpCardProps['ran
     case 6: 
       return '6';
     case 7: 
-    return '7';
+      return '7';
     case 8: 
       return '8';
     case 9: 

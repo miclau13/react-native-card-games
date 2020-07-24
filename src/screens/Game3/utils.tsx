@@ -1,3 +1,4 @@
+import { isEqual, uniqWith } from 'lodash';
 import { FaceUpCardProps } from '@components/FaceUpCard';
 import { getRandomRank, getRandomSuit, shuffleDeck } from '@components/FaceUpCard/utils';
 
@@ -10,7 +11,14 @@ export const getRandomQuestionCardDeck = (cardTotal: number) => {
 };
 
 export const getRandomCardDeck = (cardTotal: number) => {
-  const questionDeck = getRandomQuestionCardDeck(cardTotal);
+  let questionDeck = getRandomQuestionCardDeck(cardTotal);
+  // console.log("questionDeck", questionDeck)
+  const uniqueDeck = uniqWith(questionDeck, isEqual);
+  // console.log("uniqueDeck",uniqueDeck)
+  // console.log("uniqueDeck.length !== questionDeck.length",uniqueDeck.length !== questionDeck.length)
+  while (uniqueDeck.length !== questionDeck.length) {
+    questionDeck = getRandomQuestionCardDeck(cardTotal);
+  };
   const deck = { answerDeck: shuffleDeck([...questionDeck]), questionDeck: questionDeck };
   return deck;
 };

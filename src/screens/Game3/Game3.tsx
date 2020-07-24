@@ -45,7 +45,7 @@ const Game3: React.ComponentType<Props> = (props) => {
     "x": 0,
     "y": 0,
   });
-  const [loading] = React.useState<Game3['loading']>(false);
+  const [loading, setLoading] = React.useState<Game3['loading']>(false);
   const [score, setScore] = React.useState<Game3['score']>(0);
   const [solvedCardIDList, setSolvedCardIDList] = React.useState<Game3['solvedCardIDList']>([]);
   const [shouldFlip, setShouldFlip] = React.useState<Game3ViewProps['shouldFlip']>(false);
@@ -85,9 +85,9 @@ const Game3: React.ComponentType<Props> = (props) => {
       setScore(score => score + 1);
     };
 
-    function startNextTurn() {
-      setCardDeck(getRandomCardDeck(3));
-    };
+    // function startNextTurn() {
+    //   setCardDeck(getRandomCardDeck(3));
+    // };
 
     if (isInsideDropZone1(gesture)) {
       // If correct
@@ -95,7 +95,7 @@ const Game3: React.ComponentType<Props> = (props) => {
         // increaseScore();
         setSolvedCardIDList(list => [ ...list, 0]);
         if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
-          startNextTurn();
+          // startNextTurn();
         };
       } else {
 
@@ -107,7 +107,7 @@ const Game3: React.ComponentType<Props> = (props) => {
         // increaseScore();
         setSolvedCardIDList(list => [ ...list, 1]);
         if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
-          startNextTurn();
+          // startNextTurn();
         };
       } else {
 
@@ -120,7 +120,7 @@ const Game3: React.ComponentType<Props> = (props) => {
         // increaseScore();
         setSolvedCardIDList(list => [ ...list, 2]);
         if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
-          startNextTurn();
+          // startNextTurn();
         };
       } else {
 
@@ -130,17 +130,45 @@ const Game3: React.ComponentType<Props> = (props) => {
     };
   }, [cardDeck, dropZone1Values, dropZone2Values, dropZone2Values, solvedCardIDList ]);
 
+  // React.useEffect(() => {
+  //   let timer = 0;
+  //   function flipAfter3Second() {
+  //     timer = setTimeout(() => setShouldFlip(true), 3000);
+  //     return timer;
+  //   };
+  //   flipAfter3Second();
+  //   return () => {
+  //     clearTimeout(timer);
+  //   }
+  // }, []);
+
   React.useEffect(() => {
     let timer = 0;
-    function flipAfter2Second() {
-      timer = setTimeout(() => setShouldFlip(true), 2000);
+    function flipAfter(ms: number) {
+      timer = setTimeout(() => setShouldFlip(true), ms);
       return timer;
     };
-    flipAfter2Second();
+    function startNextTurn() {
+      setLoading(true);
+      setSolvedCardIDList([]);
+      setShouldFlip(false);
+      setCardDeck(getRandomCardDeck(3));
+      setTimeout(() => setLoading(false), 500);
+      flipAfter(3000);
+    };
+    if (solvedCardIDList.length === cardDeck.questionDeck.length ) {
+      startNextTurn();
+    };
+    if (!shouldFlip) {
+      flipAfter(3000);
+    }
     return () => {
       clearTimeout(timer);
     }
-  }, []);
+    // console.log("solvedCardIDList", solvedCardIDList)
+  }, [cardDeck, solvedCardIDList, shouldFlip]);
+
+  // console.log("cardDeck outside",cardDeck)
   
   if (loading) {
     return (
