@@ -26,7 +26,25 @@ const Home: React.ComponentType<Props> = (props) => {
   const [loading] = React.useState<Home['loading']>(false);
 
   const handleGameCardOnPress = React.useCallback<Home['handleGameCardOnPress']>(gameNumber => (event) => {
-    const screen = `Game${gameNumber}`;
+    let screen: keyof HomeStackParamList = "Game5";
+    switch (gameNumber) {
+      case 1: 
+        screen = "Game1";
+        break;
+      case 2: 
+        screen = "Game2";
+        break;
+      case 3: 
+        screen = "Game3";
+        break;
+      case 4: 
+        screen = "Game4";
+        break;
+      default: 
+        screen = "Game5";
+        break;
+    }
+
     navigation.navigate(screen)
   }, []);
   

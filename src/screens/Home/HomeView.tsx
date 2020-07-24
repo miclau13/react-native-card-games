@@ -1,11 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Button, ButtonProps, Card, Icon } from 'react-native-elements';
+import { TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import { Image } from 'react-native-elements';
 
 import styles from './styles';
 
 export interface HomeViewProps {
-  handleGameCardOnPress(gameNumber: number): Exclude<ButtonProps['onPress'], undefined>;
+  handleGameCardOnPress(gameNumber: number): Exclude<TouchableOpacityProps['onPress'], undefined>;
 };
 
 const HomeView: React.ComponentType<HomeViewProps> = (props) => {
@@ -14,62 +14,46 @@ const HomeView: React.ComponentType<HomeViewProps> = (props) => {
   } = props;
   
   return (
-    <View>
-      <Card
-        title='Game1'
-        // image={require('../images/pic2.jpg')}
-      >
-        <Button
-          icon={<Icon name='input' color='#ffffff' />}
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          onPress={handleGameCardOnPress(1)}
-          title='PLAY GAME 1' 
+    <View style={styles.container}>
+      <TouchableOpacity onPress={handleGameCardOnPress(1)}>
+        <Image
+          source={require('@assets/Game/Game_1.png')}
+          style={{ height: 300, width: 200 }}
+          resizeMode="contain"
         />
-      </Card>
-      <Card
-        title='Game2'
-        // image={require('../images/pic2.jpg')}
-      >
-        <Button
-          icon={<Icon name='input' color='#ffffff' />}
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          onPress={handleGameCardOnPress(2)}
-          title='PLAY GAME 2' 
+      </TouchableOpacity>
+      <View style={styles.horizontalViewBox1} />
+      <TouchableOpacity onPress={handleGameCardOnPress(2)}>
+        <Image
+          source={require('@assets/Game/Game_2.png')}
+          style={{ height: 300, width: 200 }}
+          resizeMode="contain"
         />
-      </Card>
-      <Card
-        title='Game3'
-        // image={require('../images/pic2.jpg')}
-      >
-        <Button
-          icon={<Icon name='input' color='#ffffff' />}
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          onPress={handleGameCardOnPress(3)}
-          title='PLAY GAME 3' 
+      </TouchableOpacity>
+      <View style={styles.horizontalViewBox1} />
+      <TouchableOpacity onPress={handleGameCardOnPress(3)}>
+        <Image
+          source={require('@assets/Game/Game_3.png')}
+          style={{ height: 300, width: 200 }}
+          resizeMode="contain"
         />
-      </Card>
-      <Card
-        title='Game4'
-        // image={require('../images/pic2.jpg')}
-      >
-        <Button
-          icon={<Icon name='input' color='#ffffff' />}
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          onPress={handleGameCardOnPress(4)}
-          title='PLAY GAME 4' 
+      </TouchableOpacity>
+      <View style={styles.horizontalViewBox1} />
+      <TouchableOpacity onPress={handleGameCardOnPress(4)}>
+        <Image
+          source={require('@assets/Game/Game_4.png')}
+          style={{ height: 300, width: 200 }}
+          resizeMode="contain"
         />
-      </Card>
-      <Card
-        title='Game5'
-        // image={require('../images/pic2.jpg')}
-      >
-        <Button
-          icon={<Icon name='input' color='#ffffff' />}
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          onPress={handleGameCardOnPress(5)}
-          title='PLAY GAME 5' 
+      </TouchableOpacity>
+      <View style={styles.horizontalViewBox1} />
+      <TouchableOpacity onPress={handleGameCardOnPress(5)}>
+        <Image
+          source={require('@assets/Game/Game_5.png')}
+          style={{ height: 300, width: 200 }}
+          resizeMode="contain"
         />
-      </Card>
+      </TouchableOpacity>
     </View>
   );
 }
