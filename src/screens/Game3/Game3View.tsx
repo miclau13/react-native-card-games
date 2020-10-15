@@ -27,6 +27,7 @@ export interface Game3ViewProps {
   isInsideDropZone2: (gestureState: PanResponderGestureState) => boolean;
   isInsideDropZone3: (gestureState: PanResponderGestureState) => boolean;
   shouldFlip: boolean;
+  shouldReset: boolean;
   title: GameHeaderProps['title'];
 };
 
@@ -46,12 +47,14 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
     isInsideDropZone2,
     isInsideDropZone3,
     shouldFlip,
+    shouldReset,
     title,
   } = props;
 
   const dropZoneForAnswerCard1 = getDropZone(cardDeck.answerDeck[0], cardDeck.questionDeck);
   const dropZoneForAnswerCard2 = getDropZone(cardDeck.answerDeck[1], cardDeck.questionDeck);
   const dropZoneForAnswerCard3 = getDropZone(cardDeck.answerDeck[2], cardDeck.questionDeck);
+
 
   return (
     <GameBackground>
@@ -89,7 +92,7 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
       <View style={styles.container}>
         <Draggable 
           shouldReverse
-          shouldReset={false}
+          shouldReset={shouldReset}
           imageSource={getCardImageByRankAndSuit(cardDeck.answerDeck[0].rank, cardDeck.answerDeck[0].suit)}
           renderSize={300} 
           x={150}
@@ -112,7 +115,7 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
         />
         <Draggable 
           shouldReverse
-          shouldReset={false}
+          shouldReset={shouldReset}
           imageSource={getCardImageByRankAndSuit(cardDeck.answerDeck[1].rank, cardDeck.answerDeck[1].suit)}
           renderSize={300} 
           x={450}
@@ -135,7 +138,7 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
         />
         <Draggable 
           shouldReverse
-          shouldReset={false}
+          shouldReset={shouldReset}
           imageSource={getCardImageByRankAndSuit(cardDeck.answerDeck[2].rank, cardDeck.answerDeck[2].suit)}
           renderSize={300} 
           x={750}

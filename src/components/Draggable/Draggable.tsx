@@ -103,12 +103,8 @@ export default function Draggable(props: DraggableProps) {
   const isDragging = React.useRef(false);
 
   const suitToDropZone = React.useCallback(() => {
-    // console.log(" suitToDropZone dropZoneValues",dropZoneValues)
-    // console.log("suitToDropZone x",x)
-    // console.log("suitToDropZone y",y)
-    // console.log("pan.current",pan.current)
     Animated.spring(pan.current, {
-      toValue: {x: dropZoneValues.x - x - 50, y: dropZoneValues.y - dropZoneValues.height - y - 8},
+      toValue: {x: dropZoneValues.x - x - 50, y: dropZoneValues.y - dropZoneValues.height - y - 118},
       // toValue: {x: 0, y: -324},
       // useNativeDriver: false,
     }).start();
@@ -161,7 +157,7 @@ export default function Draggable(props: DraggableProps) {
           // pan.current.flattenOffset();
           suitToDropZone();
           // setTimeout(reversePosition, 500)
-          shouldReset && resetPosition();
+          // shouldReset && resetPosition();
         } else {
           reversePosition();
         }
@@ -223,6 +219,11 @@ export default function Draggable(props: DraggableProps) {
     onPanResponderRelease,
     shouldStartDrag,
   ]);
+
+  React.useEffect(() => {
+    shouldReset && resetPosition();
+  }, [shouldReset]);
+
 
   // TODO Figure out a way to destroy and remove offsetFromStart entirely
   React.useEffect(() => {
