@@ -1,10 +1,19 @@
 import React from 'react';
 
+import LoginStack from '@navigator/StackNavigator/LoginStack';
 import RootTab from './TabNavigator/RootTab';
 
-const Navigator = () => {
+interface NavigatorProps {
+  userToken: string
+};
+
+const Navigator: React.ComponentType<NavigatorProps> = ({ userToken }) => {
   return (
-    <RootTab />
+    userToken === '' ? (
+      <LoginStack />
+    ) : (
+      <RootTab />
+    )
   );
 };
 

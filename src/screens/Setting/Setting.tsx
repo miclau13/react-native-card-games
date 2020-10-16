@@ -1,6 +1,7 @@
 import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { AuthContext } from '../../../App';
 import LoadingComponent from '@components/Loading';
 import { SettingStackParamList } from '@navigator/StackNavigator/SettingStack';
 import SettingView, { SettingViewProps } from './SettingView';
@@ -15,17 +16,16 @@ type Props = {
 };
 
 interface Setting {
-  handleGameCardOnPress: SettingViewProps['handleGameCardOnPress'];
   loading: boolean;
 };
 
 const Setting: React.ComponentType<Props> = (props) => {
   const { navigation } = props;
   const [loading] = React.useState<Setting['loading']>(false);
+  const { signOut } = React.useContext(AuthContext);
 
-  const handleGameCardOnPress = React.useCallback<Setting['handleGameCardOnPress']>(gameNumber => (event) => {
-    // const screen = `Game${gameNumber}`;
-    // navigation.navigate(screen)
+  const handleLogoutOnPress = React.useCallback<SettingViewProps['handleLogoutOnPress']>(() => {
+    signOut();
   }, []);
   
   if (loading) {
@@ -36,7 +36,7 @@ const Setting: React.ComponentType<Props> = (props) => {
 
   return (
     <SettingView 
-      handleGameCardOnPress={handleGameCardOnPress}
+      handleLogoutOnPress={handleLogoutOnPress}
     />
   )
 };
