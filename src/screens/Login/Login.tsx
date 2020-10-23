@@ -30,8 +30,8 @@ const Login: React.ComponentType<Props> = (props) => {
   });
 
   const handleLogInOnPress = React.useCallback<LoginViewProps['handleLogInOnPress']>(() => {
-    signIn("haha")
-  }, [signIn]);
+    signIn(inputValues);
+  }, [inputValues, signIn]);
 
   const handleInputOnChange = React.useCallback<LoginViewProps['handleInputOnChange']>(field => value => {
     setInputValues(values => {

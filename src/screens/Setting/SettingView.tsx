@@ -14,29 +14,16 @@ const SettingView: React.ComponentType<SettingViewProps> = (props) => {
   } = props;
   
   return (
-    <View>
-      <Card
-        title='[Setting1]'
-        // image={require('../images/pic2.jpg')}
-      >
+    <View style={{ flex: 1, justifyContent: 'center' }}>
+      {/* <View style={{ marginVertical: 16 }} /> */}
+      <View style={{ width: '50%', alignSelf: 'center'}}>
         <Button
           icon={<Icon name='input' color='#ffffff' />}
           buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
           onPress={handleLogoutOnPress}
           title='Log Out' 
         />
-      </Card>
-      {/* <Card
-        title='[Setting2]'
-        // image={require('../images/pic2.jpg')}
-      >
-        <Button
-          icon={<Icon name='input' color='#ffffff' />}
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          onPress={handleGameCardOnPress(2)}
-          title='PLAY GAME 2' 
-        />
-      </Card> */}
+      </View>
     </View>
   );
 }

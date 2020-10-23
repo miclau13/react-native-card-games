@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import * as Crypto from 'expo-crypto';
 import * as SecureStore from 'expo-secure-store';
 import React from 'react';
 import { ThemeProvider } from 'react-native-elements';
@@ -18,9 +19,14 @@ interface Action {
 };
 
 interface AuthContextValue {
-  signIn(data: any): Promise<void>;
+  signIn(data: LoginInputValues): Promise<void>;
   signOut(): void;
-  signUp(data: any):  Promise<void>;
+  signUp(data: LoginInputValues):  Promise<void>;
+};
+
+type LoginInputValues = {
+  username: string;
+  password: string;
 };
 
 const initialState = {
@@ -93,12 +99,48 @@ const App = () => {
     bootstrapAsync();
   }, []);
   
-  const authContext = React.useMemo(() => ({
+  const authContext = React.useMemo<AuthContextValue>(() => ({
     signIn: async data => {
       // In a production app, we need to send some data (usually username, password) to server and get a token
       // We will also need to handle errors if sign in failed
       // After getting token, we need to persist the token using `AsyncStorage`
       // In the example, we'll use a dummy token
+
+      const hashedPassword = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        data.password
+      );
+
+      console.log("hashedPassword",hashedPassword)
+      // try {
+      //   const response = await fetch(`https://18.163.0.98`, {
+      //     method: 'post',
+      //     headers: {
+      //       Accept: 'application/json',
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({
+      //       "userToken": "",
+      //       "sysId": "IBRAIN",
+      //       "funcId": "REG_SUBMIT",
+      //       "data": {
+      //           "userId": data.username,
+      //           "pw": hashedPassword,
+      //           "email": "miclau2004@gmail.com",
+      //           "org": "CHILD",
+      //           "other": {
+      //               "age": "18",
+      //               "gender": "M"
+      //           }
+      //       }
+      //     }),
+      //   });
+      //   const result = await response.json();
+      //   console.log("result", result)
+      // } catch (error) {
+      //   console.log("error", error)
+      // }
+      
   
       dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
     },

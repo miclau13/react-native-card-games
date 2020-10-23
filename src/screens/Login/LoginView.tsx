@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import { Button, ButtonProps, Image, Icon } from 'react-native-elements';
 
 import GameBackground, { GameBackgroundProps } from '@components/GameBackground';
@@ -25,6 +25,10 @@ const LoginView: React.ComponentType<LoginViewProps> = (props) => {
   } = props;
   
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
     <GameBackground>
       <View style={{ alignItems: 'center', alignSelf: 'center', width: '50%' }}>
         <Image
@@ -56,8 +60,8 @@ const LoginView: React.ComponentType<LoginViewProps> = (props) => {
           title='Log In' 
         />
       </View>
-
     </GameBackground>
+    </KeyboardAvoidingView>
   );
 }
 export default React.memo(LoginView);
