@@ -33,8 +33,7 @@ const SettingView: React.ComponentType<SettingViewProps> = (props) => {
   return (
     <View style={styles.container}>
       <ListItem 
-        containerStyle={{ padding: 32, margin: 32, backgroundColor: 'pink' }} 
-        style={{ backgroundColor: 'yellow'}}
+        containerStyle={styles.listItemContainer} 
       >
         <Icon
           name='world-o'
@@ -54,7 +53,22 @@ const SettingView: React.ComponentType<SettingViewProps> = (props) => {
           items={[{ label: 'Chinese', value: 'chinese'}]}
           onValueChange={()=> {}}
           value={"chinese"}
+          viewContainerStyle={{ width: 500 }}
         />
+      </ListItem>
+
+      <ListItem 
+        containerStyle={styles.listItemContainer} 
+        onPress={handleLogoutOnPress}
+        underlayColor="transparent"
+      >
+        <ListItem.Content>
+
+          <ListItem.Title style={{ fontWeight: 'bold', alignSelf: 'center' }}>
+            Log Out
+          </ListItem.Title>
+
+        </ListItem.Content>
       </ListItem>
     </View>
   )

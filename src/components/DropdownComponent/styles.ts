@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     right: 2,
   },
   viewContainer: {
-    // backgroundColor: '#E2F5FA',
     // borderColor: '#86939e',
+    // width: 500,
     borderRadius: 15,
     borderWidth: 1,
   }

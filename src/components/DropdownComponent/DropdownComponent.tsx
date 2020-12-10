@@ -1,10 +1,15 @@
 import React from 'react';
+import { ViewStyle } from 'react-native';
 import { Icon } from 'react-native-elements';
 import RNPickerSelect, { PickerSelectProps } from 'react-native-picker-select';
 
 import styles, { pickerSelectStyles } from './styles';
 
-const DropdownComponent: React.ComponentType<PickerSelectProps> = (props) => {
+export interface DropdownComponentProps extends PickerSelectProps {
+  viewContainerStyle: ViewStyle;
+}
+
+const DropdownComponent: React.ComponentType<DropdownComponentProps> = (props) => {
   return (
     <RNPickerSelect
       style={{
@@ -14,6 +19,7 @@ const DropdownComponent: React.ComponentType<PickerSelectProps> = (props) => {
         },
         viewContainer: {
           ...styles.viewContainer,
+          ...props.viewContainerStyle,
         }
       }}
       placeholder={{}}
