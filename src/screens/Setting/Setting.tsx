@@ -1,3 +1,4 @@
+import { Audio } from "expo-av";
 import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -27,6 +28,24 @@ const Setting: React.ComponentType<Props> = (props) => {
   const handleLogoutOnPress = React.useCallback<SettingViewProps['handleLogoutOnPress']>(() => {
     signOut();
   }, []);
+
+  // const playSound
+  // const soundObject = new Audio.Sound();
+  //   try {
+  //     await soundObject.loadAsync('https://s3.amazonaws.com/exp-us-standard/audio/playlist-example/Comfort_Fit_-_03_-_Sorry.mp3');
+  //     await soundObject.playAsync();
+  //     // Your sound is playing!
+
+  //     // Don't forget to unload the sound from memory
+  //     // when you are done using the Sound object
+  //     await soundObject.unloadAsync();
+  //   } catch (error) {
+  //     // An error occurred!
+  //   }
+
+  // React.useEffect(() => {
+
+  // }, [])
   
   if (loading) {
     return (
