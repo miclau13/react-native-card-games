@@ -35,7 +35,7 @@ const Game5View: React.ComponentType<Game5ViewProps> = (props) => {
     isInsideDropZone,
     title,
   } = props;
-
+console.log("dropZoneValues",dropZoneValues)
   return (
     <GameBackground>
       <GameHeader 

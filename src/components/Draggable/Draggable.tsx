@@ -106,7 +106,7 @@ export default function Draggable(props: DraggableProps) {
     Animated.spring(pan.current, {
       toValue: {x: dropZoneValues.x - x - 50, y: dropZoneValues.y - dropZoneValues.height - y - 118},
       // toValue: {x: 0, y: -324},
-      // useNativeDriver: false,
+      useNativeDriver: false,
     }).start();
   }, [dropZoneValues, pan, x, y]);
 
@@ -156,7 +156,8 @@ export default function Draggable(props: DraggableProps) {
         if (isInsideDropZone(gestureState)) {
           // pan.current.flattenOffset();
           suitToDropZone();
-          // setTimeout(reversePosition, 500)
+          // if (shouldReset)
+          shouldReset && setTimeout(reversePosition, 0)
           // shouldReset && resetPosition();
         } else {
           reversePosition();

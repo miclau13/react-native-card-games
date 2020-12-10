@@ -5,6 +5,11 @@ const styles = StyleSheet.create({
     // padding: 16,
     // backgroundColor: 'pink'
   },
+  flipImage: {
+    height: 300, 
+    width: 200,
+    // color: 'transparent'
+  },
   image: {
     height: 300, 
     width: 200

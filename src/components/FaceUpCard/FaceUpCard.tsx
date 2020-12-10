@@ -11,6 +11,7 @@ type CardSuit = 'Clubs' | 'Diamonds' | 'Hearts' | 'Spades';
 export interface FaceUpCardProps {
   rank: CardRank;
   suit: CardSuit;
+  shouldFlip?: boolean;
 };
 
 interface FaceUpCard { 
@@ -20,7 +21,8 @@ interface FaceUpCard {
 const FaceUpCard: React.ComponentType<FaceUpCardProps> = (props) => {
   const {
     rank,
-    suit
+    suit,
+    shouldFlip
   } = props;
 
   const imageSrc = React.useMemo(() => {
@@ -31,7 +33,7 @@ const FaceUpCard: React.ComponentType<FaceUpCardProps> = (props) => {
     <View style={styles.container}>
       <Image 
         source={imageSrc}
-        style={styles.image}
+        style={shouldFlip ? styles.flipImage : styles.image}
         resizeMode="contain"
       />
     </View>

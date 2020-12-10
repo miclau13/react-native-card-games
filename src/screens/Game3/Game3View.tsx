@@ -66,8 +66,9 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
           onLayout={handleDropZone1OnLayout}
         >
           <FaceUpCard 
-            rank={shouldFlip ? "0" : cardDeck.questionDeck[0].rank}
+            rank={cardDeck.questionDeck[0].rank}
             suit={cardDeck.questionDeck[0].suit}
+            shouldFlip={shouldFlip}
           />
         </View>
         <View style={styles.horizontalViewBox3} />
@@ -75,8 +76,9 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
           onLayout={handleDropZone2OnLayout}
         >
           <FaceUpCard 
-            rank={shouldFlip ? "0" : cardDeck.questionDeck[1].rank}
+            rank={cardDeck.questionDeck[1].rank}
             suit={cardDeck.questionDeck[1].suit}
+            shouldFlip={shouldFlip}
           />
         </View>
         <View style={styles.horizontalViewBox3} />
@@ -84,15 +86,16 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
           onLayout={handleDropZone3OnLayout}
         >
           <FaceUpCard 
-            rank={shouldFlip ? "0" : cardDeck.questionDeck[2].rank}
+            rank={cardDeck.questionDeck[2].rank}
             suit={cardDeck.questionDeck[2].suit}
+            shouldFlip={shouldFlip}
           />
         </View>
       </View>
       <View style={styles.container}>
         <Draggable 
           shouldReverse
-          shouldReset={shouldReset}
+          shouldReset={false}
           imageSource={getCardImageByRankAndSuit(cardDeck.answerDeck[0].rank, cardDeck.answerDeck[0].suit)}
           renderSize={300} 
           x={150}
@@ -115,10 +118,10 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
         />
         <Draggable 
           shouldReverse
-          shouldReset={shouldReset}
+          shouldReset={false}
           imageSource={getCardImageByRankAndSuit(cardDeck.answerDeck[1].rank, cardDeck.answerDeck[1].suit)}
           renderSize={300} 
-          x={450}
+          x={550}
           y={0}
           onDragRelease={handleOnDragRelease(cardDeck.answerDeck[1].rank, cardDeck.answerDeck[1].suit)}
           dropZoneValues={
@@ -138,10 +141,10 @@ const Game3View: React.ComponentType<Game3ViewProps> = (props) => {
         />
         <Draggable 
           shouldReverse
-          shouldReset={shouldReset}
+          shouldReset={false}
           imageSource={getCardImageByRankAndSuit(cardDeck.answerDeck[2].rank, cardDeck.answerDeck[2].suit)}
           renderSize={300} 
-          x={750}
+          x={950}
           y={0}
           onDragRelease={handleOnDragRelease(cardDeck.answerDeck[2].rank, cardDeck.answerDeck[2].suit)}
           dropZoneValues={

@@ -31,26 +31,26 @@ const Game3: React.ComponentType<Props> = (props) => {
   const [dropZone1Values, setDropZone1Values] = React.useState<Game3ViewProps['dropZone1Values']>({
     "height": 0,
     "width": 0,
-    "x": 0,
+    "x": 287,
     "y": 0,
   });
   const [dropZone2Values, setDropZone2Values] = React.useState<Game3ViewProps['dropZone2Values']>({
     "height": 0,
     "width": 0,
-    "x": 0,
+    "x": 583,
     "y": 0,
   });
   const [dropZone3Values, setDropZone3Values] = React.useState<Game3ViewProps['dropZone3Values']>({
     "height": 0,
     "width": 0,
-    "x": 0,
+    "x": 879,
     "y": 0,
   });
   const [loading, setLoading] = React.useState<Game3['loading']>(false);
   const [score, setScore] = React.useState<Game3['score']>(0);
   const [solvedCardIDList, setSolvedCardIDList] = React.useState<Game3['solvedCardIDList']>([]);
   const [shouldFlip, setShouldFlip] = React.useState<Game3ViewProps['shouldFlip']>(false);
-  const [shouldReset, setShouldReset] = React.useState<Game3ViewProps['shouldReset']>(false);
+  // const [shouldReset, setShouldReset] = React.useState<Game3ViewProps['shouldReset']>(false);
 
   const startTime = Date.now();
 
@@ -72,22 +72,18 @@ const Game3: React.ComponentType<Props> = (props) => {
     return (isInsideBoundY && isInsideBoundX);
   }, [dropZone3Values]);
 
-  const startNextTurn = React.useCallback<Game3['startNextTurn']>(() => {
-    setSolvedCardIDList([]);
-    setShouldFlip(false);
-    setCardDeck(getRandomCardDeck(3));
-    setShouldReset(true);
-  }, []);
-
   const handleDropZone1OnLayout = React.useCallback<Game3ViewProps['handleDropZone1OnLayout']>((event) => {
+    console.log("handleDropZone1OnLayout", event.nativeEvent.layout)
     setDropZone1Values(event.nativeEvent.layout);
   }, []);
 
   const handleDropZone2OnLayout = React.useCallback<Game3ViewProps['handleDropZone2OnLayout']>((event) => {
+    console.log("handleDropZone2OnLayout", event.nativeEvent.layout)
     setDropZone2Values(event.nativeEvent.layout);
   }, []);
 
   const handleDropZone3OnLayout = React.useCallback<Game3ViewProps['handleDropZone3OnLayout']>((event) => {
+    console.log("handleDropZone3OnLayout", event.nativeEvent.layout)
     setDropZone3Values(event.nativeEvent.layout);
   }, []);
 
@@ -96,25 +92,34 @@ const Game3: React.ComponentType<Props> = (props) => {
       setScore(score => score + 1);
     };
 
-    setShouldReset(false);
+    function startNextTurn() {
+      setSolvedCardIDList([]);
+      setShouldFlip(false);
+      setCardDeck(getRandomCardDeck(3));
+      // setShouldReset(true);
+      setLoading(false);
+    };
 
     if (isInsideDropZone1(gesture)) {
       // If correct
       if (cardDeck.questionDeck[0].rank === rank) {
-        // increaseScore();
         setSolvedCardIDList(list => [ ...list, 0]);
+
         if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
-          startNextTurn();
+          increaseScore();
+          setLoading(true);
+          setTimeout(() => startNextTurn(), 100)
         };
       };
 
     } else if (isInsideDropZone2(gesture)) {
       // If correct
       if (cardDeck.questionDeck[1].rank === rank) {
-        // increaseScore();
         setSolvedCardIDList(list => [ ...list, 1]);
         if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
-          startNextTurn();
+          increaseScore();
+          setLoading(true);
+          setTimeout(() => startNextTurn(), 100)
         };
       };
 
@@ -122,81 +127,98 @@ const Game3: React.ComponentType<Props> = (props) => {
     } else if (isInsideDropZone3(gesture)) {
       // If correct
       if (cardDeck.questionDeck[2].rank === rank) {
-        // increaseScore();
+
         setSolvedCardIDList(list => [ ...list, 2]);
         if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
-          startNextTurn();
+          increaseScore();
+          setLoading(true);
+          setTimeout(() => startNextTurn(), 100)
         };
       };
 
     };
   }, [cardDeck, dropZone1Values, dropZone2Values, dropZone2Values, solvedCardIDList]);
 
+  // React.useEffect(() => {
+  //   let timer = 0;
+
+  //   if (!shouldFlip) {
+  //     timer = setTimeout(() => setShouldFlip(true), 3000);
+  //   };
+  //   return () => {
+  //     clearTimeout(timer);
+  //   }
+  // }, [cardDeck, solvedCardIDList, shouldFlip]);
+
   React.useEffect(() => {
-    let timer = 0;
 
     if (!shouldFlip) {
-      timer = setTimeout(() => setShouldFlip(true), 3000);
+      setTimeout(() => setShouldFlip(true), 3000);
     };
-    return () => {
-      clearTimeout(timer);
-    }
-  }, [cardDeck, solvedCardIDList, shouldFlip]);
+
+  }, [score]);
   
-  React.useEffect(() => {
-    return () => {
+  // React.useEffect(() => {
+  //   return () => {
 
-      const endTime = Date.now();
+  //     const endTime = Date.now();
 
-      const logging = async () => {
-        try {
-          const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
-            method: 'POST',
-            headers: {
-              // Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              userToken: "",
-              sysId: "IBRAIN",
-              funcId: "GAME_RSLT",
-              data: {
-                startTime,
-                endTime,
-                gameId: "IB_GAME3",
-                gameLogs: [
-                  {
-                    "logTime": "1546325436806",
-                    "logDetail": {
-                        "miss": "T",
-                        "x": 123,
-                        "y": 321
-                    }
-                },
-                {
-                    "logTime": "1546325438105",
-                    "logDetail": {
-                        "miss": "F",
-                        "x": 652,
-                        "y": 721,
-                    }
-                }
-                ]
-              }
-            }),
-          });
-          console.log("response", response)
-          const result = await response.json();
-          console.log("result", result)
+  //     const logging = async () => {
+  //       try {
+  //         const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
+  //           method: 'POST',
+  //           headers: {
+  //             // Accept: 'application/json',
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify({
+  //             userToken: "",
+  //             sysId: "IBRAIN",
+  //             funcId: "GAME_RSLT",
+  //             data: {
+  //               startTime,
+  //               endTime,
+  //               gameId: "IB_GAME3",
+  //               gameLogs: [
+  //                 {
+  //                   "logTime": "1546325436806",
+  //                   "logDetail": {
+  //                       "miss": "T",
+  //                       "x": 123,
+  //                       "y": 321
+  //                   }
+  //               },
+  //               {
+  //                   "logTime": "1546325438105",
+  //                   "logDetail": {
+  //                       "miss": "F",
+  //                       "x": 652,
+  //                       "y": 721,
+  //                   }
+  //               }
+  //               ]
+  //             }
+  //           }),
+  //         });
+  //         console.log("response", response)
+  //         const result = await response.json();
+  //         console.log("result", result)
           
-        } catch (error) {
-          console.log("error", error)
-        }
-      }
+  //       } catch (error) {
+  //         console.log("error", error)
+  //       }
+  //     }
 
-      logging();
-    }
-  }, []);
+  //     logging();
+  //   }
+  // }, []);
+
+  // console.log("dropZone1Values",dropZone1Values)
+  // console.log("dropZone2Values",dropZone2Values)
+  // console.log("dropZone3Values",dropZone3Values)
+  // console.log("cardDeck",cardDeck)
+  // console.log("shouldFlip",shouldFlip)
+
 
   if (loading) {
     return (
@@ -218,7 +240,7 @@ const Game3: React.ComponentType<Props> = (props) => {
       isInsideDropZone2={isInsideDropZone2}
       isInsideDropZone3={isInsideDropZone3}
       shouldFlip={shouldFlip}
-      shouldReset={shouldReset}
+      shouldReset={false}
       title={TITLE}
     />
   )

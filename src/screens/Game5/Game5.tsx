@@ -32,12 +32,14 @@ const Game5: React.ComponentType<Props> = (props) => {
     "x": 0,
     "y": 0,
   });
-  const [loading] = React.useState<Game5['loading']>(false);
+  const [loading, setLoading] = React.useState<Game5['loading']>(false);
   const [score, setScore] = React.useState<Game5['score']>(0);
 
   const startTime = Date.now();
 
   const isInsideDropZone = React.useCallback<Game5ViewProps['isInsideDropZone']>((gesture: PanResponderGestureState) => { 
+    console.log("isInsideDropZone dropZoneValues",dropZoneValues)
+    console.log("gesture",gesture)
     const isInsideBoundY = gesture.moveY > dropZoneValues.y && gesture.moveY < dropZoneValues.y + dropZoneValues.height;
     const isInsideBoundX = gesture.moveX > dropZoneValues.x && gesture.moveX < dropZoneValues.x + dropZoneValues.width;
     return isInsideBoundY && isInsideBoundX;
@@ -47,12 +49,13 @@ const Game5: React.ComponentType<Props> = (props) => {
     setDropZoneValues(event.nativeEvent.layout);
   }, []);
 
-  const handleOnDragRelease = React.useCallback<Game5ViewProps['handleOnDragRelease']>(rank => (e, gesture) => {   
+  const handleOnDragRelease = React.useCallback<Game5ViewProps['handleOnDragRelease']>(rank => async (e, gesture) => {   
     function increaseScore() {
       setScore(score => score + 1);
     };
 
     function startNextTurn() {
+      setLoading(false);
       setCardDeck(getRandomCardDeck(5, 3));
     };
 
@@ -60,9 +63,10 @@ const Game5: React.ComponentType<Props> = (props) => {
       //If correct
       if (cardDeck.answerRank === rank) {
         increaseScore();
-        startNextTurn();
+        setLoading(true);
+        setTimeout(() => startNextTurn(), 100)
       } else {
-
+        // startNextTurn();
       };
     };
     
@@ -122,6 +126,8 @@ const Game5: React.ComponentType<Props> = (props) => {
       logging();
     }
   }, []);
+
+  // console.log("dropZoneValues",dropZoneValues)
   
   if (loading) {
     return (
