@@ -113,30 +113,39 @@ const App = () => {
 
       console.log("hashedPassword",hashedPassword)
       // try {
-      //   const response = await fetch(`https://18.163.0.98`, {
-      //     method: 'post',
+      //   // const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080`, {
+      //   //   method: 'POST',
+      //   //   headers: {
+      //   //     // Accept: 'application/json',
+      //   //     'Content-Type': 'application/json',
+      //   //   },
+      //   //   body: JSON.stringify({
+      //   //     "userToken": "",
+      //   //     "sysId": "IBRAIN",
+      //   //     "funcId": "REG_INIT"
+      //   //   })
+      //   // });
+      //   const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
+      //     method: 'POST',
       //     headers: {
-      //       Accept: 'application/json',
+      //       // Accept: 'application/json',
       //       'Content-Type': 'application/json',
       //     },
       //     body: JSON.stringify({
-      //       "userToken": "",
-      //       "sysId": "IBRAIN",
-      //       "funcId": "REG_SUBMIT",
-      //       "data": {
-      //           "userId": data.username,
-      //           "pw": hashedPassword,
-      //           "email": "miclau2004@gmail.com",
-      //           "org": "CHILD",
-      //           "other": {
-      //               "age": "18",
-      //               "gender": "M"
-      //           }
+      //       userToken: "",
+      //       sysId: "IBRAIN",
+      //       funcId: "REG_SUBMIT",
+      //       data: {
+      //         userId: data.username,
+      //         pw: hashedPassword,
+      //         email: "miclau2004@gmail.com",
       //       }
       //     }),
       //   });
+      //   // console.log("response", response)
       //   const result = await response.json();
       //   console.log("result", result)
+        
       // } catch (error) {
       //   console.log("error", error)
       // }

@@ -31,6 +31,8 @@ const Game1: React.ComponentType<Props> = (props) => {
   const [loading] = React.useState<Game1['loading']>(false);
   const [score, setScore] = React.useState<Game1['score']>(0);
 
+  const startTime = Date.now();
+
   const handleCardOnPress = React.useCallback<Game1ViewProps['handleCardOnPress']>(id => {
     setDisabled(true);
     if (flippedCardIdList.length === 0) {
@@ -81,6 +83,61 @@ const Game1: React.ComponentType<Props> = (props) => {
 
     checkShouldGoToNextTurn();
   }, [solvedCardList]);
+
+  React.useEffect(() => {
+    return () => {
+
+      const endTime = Date.now();
+
+      const logging = async () => {
+        try {
+          const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
+            method: 'POST',
+            headers: {
+              // Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userToken: "",
+              sysId: "IBRAIN",
+              funcId: "GAME_RSLT",
+              data: {
+                startTime,
+                endTime,
+                gameId: "IB_GAME1",
+                gameLogs: [
+                  {
+                    "logTime": "1546325436806",
+                    "logDetail": {
+                        "miss": "T",
+                        "x": 123,
+                        "y": 321
+                    }
+                },
+                {
+                    "logTime": "1546325438105",
+                    "logDetail": {
+                        "miss": "F",
+                        "x": 652,
+                        "y": 721,
+                    }
+                }
+                ]
+              }
+            }),
+          });
+          console.log("response", response)
+          const result = await response.json();
+          console.log("result", result)
+          
+        } catch (error) {
+          console.log("error", error)
+        }
+      }
+
+      logging();
+    }
+  }, []);
 
   if (loading) {
     return (
