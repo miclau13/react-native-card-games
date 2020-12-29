@@ -14,6 +14,7 @@ type InputValues = {
 export interface LoginViewProps {
   handleLogInOnPress: Exclude<ButtonProps['onPress'], undefined>;
   handleInputOnChange(field: keyof InputValues): InputComponentProps['onChangeText'];
+  handleSignUpOnPress: Exclude<ButtonProps['onPress'], undefined>;
   inputValues: InputValues;
 };
 
@@ -21,6 +22,7 @@ const LoginView: React.ComponentType<LoginViewProps> = (props) => {
   const { 
     handleLogInOnPress,
     handleInputOnChange,
+    handleSignUpOnPress,
     inputValues,
   } = props;
   
@@ -30,10 +32,10 @@ const LoginView: React.ComponentType<LoginViewProps> = (props) => {
       style={{ flex: 1 }}
     >
     <GameBackground>
-      <View style={{ alignItems: 'center', alignSelf: 'center', width: '50%' }}>
+      <View style={styles.container}>
         <Image
           source={require('@assets/Cards/Back_Side_Card.jpg')}
-          style={{ height: 300, width: 200 }}
+          style={{ height: 100, width: 50 }}
           resizeMode="contain"
         />
         <View style={{ marginVertical: 8 }}/>
@@ -52,14 +54,19 @@ const LoginView: React.ComponentType<LoginViewProps> = (props) => {
           value={inputValues.password}
         />
         <View style={{ marginVertical: 16 }}/>
-        <Button
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          disabled={!inputValues.username || !inputValues.password}
-          // icon={<Icon name='input' color='#ffffff' />}
-          onPress={handleLogInOnPress}
-          title='Log In' 
-        />
+        <View style={styles.buttonContainer}>
+          <Button
+            onPress={handleLogInOnPress}
+            title='Log In' 
+          />
+          <View style={{ marginHorizontal: 16 }}/>
+          <Button
+            onPress={handleSignUpOnPress}
+            title='Sign Up' 
+          />
+        </View>
       </View>
+      <View style={{ flex: 1 }}/>
     </GameBackground>
     </KeyboardAvoidingView>
   );

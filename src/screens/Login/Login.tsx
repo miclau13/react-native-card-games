@@ -33,6 +33,10 @@ const Login: React.ComponentType<Props> = (props) => {
     signIn(inputValues);
   }, [inputValues, signIn]);
 
+  const handleSignUpOnPress = React.useCallback<LoginViewProps['handleSignUpOnPress']>(() => {
+    navigation.navigate("SignUp")
+  }, []);
+
   const handleInputOnChange = React.useCallback<LoginViewProps['handleInputOnChange']>(field => value => {
     setInputValues(values => {
       return ({ ...values, [field]: value });
@@ -49,6 +53,7 @@ const Login: React.ComponentType<Props> = (props) => {
     <LoginView 
       handleLogInOnPress={handleLogInOnPress}
       handleInputOnChange={handleInputOnChange}
+      handleSignUpOnPress={handleSignUpOnPress}
       inputValues={inputValues}
     />
   )

@@ -112,43 +112,43 @@ const App = () => {
       );
 
       console.log("hashedPassword",hashedPassword)
-      // try {
-      //   // const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080`, {
-      //   //   method: 'POST',
-      //   //   headers: {
-      //   //     // Accept: 'application/json',
-      //   //     'Content-Type': 'application/json',
-      //   //   },
-      //   //   body: JSON.stringify({
-      //   //     "userToken": "",
-      //   //     "sysId": "IBRAIN",
-      //   //     "funcId": "REG_INIT"
-      //   //   })
-      //   // });
-      //   const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
-      //     method: 'POST',
-      //     headers: {
-      //       // Accept: 'application/json',
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({
-      //       userToken: "",
-      //       sysId: "IBRAIN",
-      //       funcId: "REG_SUBMIT",
-      //       data: {
-      //         userId: data.username,
-      //         pw: hashedPassword,
-      //         email: "miclau2004@gmail.com",
-      //       }
-      //     }),
-      //   });
-      //   // console.log("response", response)
-      //   const result = await response.json();
-      //   console.log("result", result)
+      try {
+        // const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080`, {
+        //   method: 'POST',
+        //   headers: {
+        //     // Accept: 'application/json',
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({
+        //     "userToken": "",
+        //     "sysId": "IBRAIN",
+        //     "funcId": "REG_INIT"
+        //   })
+        // });
+        const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
+          method: 'POST',
+          headers: {
+            // Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            // userToken: "",
+            // sysId: "IBRAIN",
+            funcId: "REG_SUBMIT",
+            data: {
+              userId: data.username,
+              pw: hashedPassword,
+              email: "miclau2004@gmail.com",
+            }
+          }),
+        });
+        // console.log("response", response)
+        const result = await response.json();
+        console.log("result", result)
         
-      // } catch (error) {
-      //   console.log("error", error)
-      // }
+      } catch (error) {
+        console.log("error", error)
+      }
       
   
       dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
@@ -159,6 +159,37 @@ const App = () => {
       // We will also need to handle errors if sign up failed
       // After getting token, we need to persist the token using `AsyncStorage`
       // In the example, we'll use a dummy token
+
+      const hashedPassword = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        data.password
+      );
+
+      console.log("hashedPassword",hashedPassword)
+      try {
+        const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
+          method: 'POST',
+          headers: {
+            // Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userToken: "",
+            sysId: "IBRAIN",
+            funcId: "REG_SUBMIT",
+            data: {
+              userId: data.username,
+              pw: hashedPassword,
+            }
+          }),
+        });
+        // console.log("response", response)
+        const result = await response.json();
+        console.log("result", result)
+        
+      } catch (error) {
+        console.log("error", error)
+      }
   
       dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
     },
