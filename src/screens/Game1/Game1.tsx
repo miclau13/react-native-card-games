@@ -2,6 +2,7 @@ import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
+import CorrectLoading from '@components/CorrectLoading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
 import { TITLE} from './constants';
 import { getRandomDeckInPair, shuffleDeck } from './utils';
@@ -29,6 +30,7 @@ const Game1: React.ComponentType<Props> = (props) => {
   const [disabled, setDisabled] = React.useState<Game1ViewProps['disabled']>(false);
   const [flippedCardIdList, setFlippedCardIdList] = React.useState<Game1ViewProps['flippedCardIdList']>([]);
   const [loading] = React.useState<Game1['loading']>(false);
+  const [correctLoading, setCorrectLoading] = React.useState<Game1['loading']>(false);
   const [score, setScore] = React.useState<Game1['score']>(0);
 
   const startTime = Date.now();
@@ -72,6 +74,8 @@ const Game1: React.ComponentType<Props> = (props) => {
       setSolvedCardList([]);
       setFlippedCardIdList([]);
       setScore(score => score + 1);
+      setCorrectLoading(true);
+      setTimeout(() => setCorrectLoading(false), 2000);
     };
 
     function checkShouldGoToNextTurn() {
@@ -142,6 +146,12 @@ const Game1: React.ComponentType<Props> = (props) => {
   if (loading) {
     return (
       <LoadingComponent />
+    );
+  };
+
+  if (correctLoading) {
+    return (
+      <CorrectLoading />
     );
   };
 

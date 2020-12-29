@@ -59,7 +59,7 @@ export const getRandomSuit: (specifySuit?: number) => FaceUpCardProps['suit'] = 
 };
 
 export const getCardImageBySuit = (suit: FaceUpCardProps['suit']) => {
-  let image = require('@assets/Cards/Back_Side_Card.jpg');
+  let image = require('@assets/Cards/Back_Side_Card.png');
   switch (suit) {
     case 'Clubs':
       image = require('@assets/Cards/Clubs/Clubs.png');
@@ -79,7 +79,7 @@ export const getCardImageBySuit = (suit: FaceUpCardProps['suit']) => {
 
 export const getCardImageByRankAndSuit = (rank: FaceUpCardProps['rank'], suit: FaceUpCardProps['suit']) => {
   const imageLocation = `${suit}_${rank}`;
-  let image = require('@assets/Cards/Back_Side_Card.jpg');
+  let image = require('@assets/Cards/Back_Side_Card.png');
   switch (imageLocation) {
     case 'Clubs_1':
       image = require('@assets/Cards/Clubs/Clubs_1.png');

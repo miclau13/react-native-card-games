@@ -3,6 +3,7 @@ import { PanResponderGestureState } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
+import CorrectLoading from '@components/CorrectLoading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
 import { TITLE } from './constants';
 import { getRandomCardDeck } from './utils';
@@ -33,6 +34,7 @@ const Game2: React.ComponentType<Props> = (props) => {
     "y": 0,
   });
   const [loading] = React.useState<Game2['loading']>(false);
+  const [correctLoading, setCorrectLoading] = React.useState<Game2['loading']>(false);
   const [score, setScore] = React.useState<Game2['score']>(0);
 
   const startTime = Date.now();
@@ -61,6 +63,8 @@ const Game2: React.ComponentType<Props> = (props) => {
       if (Number(rank) === cardDeck.answerPoint) {
         increaseScore();
         startNextTurn();
+        setCorrectLoading(true);
+        setTimeout(() => setCorrectLoading(false), 2000);
       } else {
 
       };
@@ -126,6 +130,12 @@ const Game2: React.ComponentType<Props> = (props) => {
   if (loading) {
     return (
       <LoadingComponent />
+    );
+  };
+
+  if (correctLoading) {
+    return (
+      <CorrectLoading />
     );
   };
 

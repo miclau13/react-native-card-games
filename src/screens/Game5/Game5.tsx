@@ -3,6 +3,7 @@ import { PanResponderGestureState } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
+import CorrectLoading from '@components/CorrectLoading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
 import { TITLE } from './constants';
 import { getRandomCardDeck } from './utils';
@@ -33,6 +34,7 @@ const Game5: React.ComponentType<Props> = (props) => {
     "y": 0,
   });
   const [loading, setLoading] = React.useState<Game5['loading']>(false);
+  const [correctLoading, setCorrectLoading] = React.useState<Game5['loading']>(false);
   const [score, setScore] = React.useState<Game5['score']>(0);
 
   const startTime = Date.now();
@@ -57,14 +59,16 @@ const Game5: React.ComponentType<Props> = (props) => {
     function startNextTurn() {
       setLoading(false);
       setCardDeck(getRandomCardDeck(5, 3));
+      increaseScore();
+      setCorrectLoading(true);
+      setTimeout(() => setCorrectLoading(false), 2000);
     };
 
     if (isInsideDropZone(gesture)) {
       //If correct
       if (cardDeck.answerRank === rank) {
-        increaseScore();
-        setLoading(true);
-        setTimeout(() => startNextTurn(), 100)
+        startNextTurn();
+
       } else {
         // startNextTurn();
       };
@@ -132,6 +136,12 @@ const Game5: React.ComponentType<Props> = (props) => {
   if (loading) {
     return (
       <LoadingComponent />
+    );
+  };
+
+  if (correctLoading) {
+    return (
+      <CorrectLoading />
     );
   };
 

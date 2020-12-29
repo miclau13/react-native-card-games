@@ -6,7 +6,7 @@ import { FaceUpCardProps } from '@components/FaceUpCard';
 import { getCardImageByRankAndSuit } from '@components/FaceUpCard/utils'; 
 import styles from './styles';
 
-const BACKSIDE_CARD_IMAGE = require('@assets/Cards/Back_Side_Card.jpg');
+const BACKSIDE_CARD_IMAGE = require('@assets/Cards/Back_Side_Card.png');
 
 type FaceDirection = "UP" | "DOWN";
 export interface ICard {

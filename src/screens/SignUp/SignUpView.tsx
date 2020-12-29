@@ -42,8 +42,8 @@ const SignUpView: React.ComponentType<SignUpViewProps> = (props) => {
       <GameBackground>
         <View style={styles.container}>
           <Image
-            source={require('@assets/Cards/Back_Side_Card.jpg')}
-            style={{ height: 100, width: 50 }}
+            source={require('@assets/App_Logo.png')}
+            style={{ height: 100, width: 100 }}
             resizeMode="contain"
           />
           <View style={{ marginVertical: 8 }}/>

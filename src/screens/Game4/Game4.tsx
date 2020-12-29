@@ -1,79 +1,10 @@
-// import React from 'react';
-// import { StackNavigationProp } from '@react-navigation/stack';
-
-// import { getRandomSuit, getCardImageBySuit } from '@components/FaceUpCard/utils';
-// import LoadingComponent from '@components/Loading';
-// import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
-// import { getRandomCardDeck } from './utils';
-// import Game4View, { Game4ViewProps } from './Game4View';
-
-// type Game4ScreenNavigationProp = StackNavigationProp<
-//   HomeStackParamList,
-//   'Game4'
-// >;
-
-// type Props = {
-//   navigation: Game4ScreenNavigationProp;
-// };
-
-// interface Game4 {
-//   loading: boolean;
-//   score: number;
-// };
-
-// const Game4: React.ComponentType<Props> = (props) => {
-//   const { navigation } = props;
-
-//   const [cardDeck, setCardDeck] = React.useState<Game4ViewProps['cardDeck']>(getRandomCardDeck(8));
-//   const [requiredSuit, setRequiredSuit] = React.useState<Game4ViewProps['requiredSuit']>(getRandomSuit());
-//   const [loading] = React.useState<Game4['loading']>(false);
-//   const [score, setScore] = React.useState<Game4['score']>(0);
-
-//   const handleOnPress = React.useCallback<Game4ViewProps['handleOnPress']>(suit => () => {
-
-//   }, [requiredSuit]);
-
-//   // Next turn if no suitable card
-//   React.useEffect(()=> {
-
-//     function startNextTurn() {
-//       setCardDeck(getRandomCardDeck(8));
-//     };
-
-//     function checkShouldGoToNextTurn() {
-//       // Condition varies on level
-//       if (!cardDeck.find(card => card.suit === requiredSuit)) {
-//         startNextTurn();
-//       };
-//     };
-
-//     checkShouldGoToNextTurn();
-//   }, [cardDeck, requiredSuit]);
-
-//   if (loading) {
-//     return (
-//       <LoadingComponent />
-//     );
-//   };
-
-//   return (
-//     <Game4View 
-//       cardDeck={cardDeck}
-//       handleOnPress={handleOnPress}
-//       requiredSuit={requiredSuit}
-//     />
-//   )
-// };
-
-// export default React.memo(Game4);
-
-
 import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
 
 import { getRandomSuit } from '@components/FaceUpCard/utils';
 import LoadingComponent from '@components/Loading';
+import CorrectLoading from '@components/CorrectLoading';
 
 import { getRandomCardDeck } from './utils';
 import Game4View, { Game4ViewProps } from './Game4View';
@@ -102,6 +33,7 @@ const Game4: React.ComponentType<Props> = (props) => {
 
   const [flippedCardIdList] = React.useState<Game4ViewProps['flippedCardIdList']>([]);
   const [loading] = React.useState<Game4['loading']>(false);
+  const [correctLoading, setCorrectLoading] = React.useState<Game4['loading']>(false);
   const [score, setScore] = React.useState<Game4['score']>(0);
 
   const startTime = Date.now();
@@ -123,6 +55,8 @@ const Game4: React.ComponentType<Props> = (props) => {
       setCardList(getRandomCardDeck(8));
       setSolvedCardList([]);
       setRequiredSuit(getRandomSuit());
+      setCorrectLoading(true);
+      setTimeout(() => setCorrectLoading(false), 2000);
     };
     function checkShouldGoToNextTurn() {
       // Condition varies on level
@@ -192,6 +126,12 @@ const Game4: React.ComponentType<Props> = (props) => {
   if (loading) {
     return (
       <LoadingComponent />
+    );
+  };
+
+  if (correctLoading) {
+    return (
+      <CorrectLoading />
     );
   };
 
