@@ -95,11 +95,13 @@ const Game3: React.ComponentType<Props> = (props) => {
     };
 
     function startNextTurn() {
+      increaseScore();
       setSolvedCardIDList([]);
       setShouldFlip(false);
       setCardDeck(getRandomCardDeck(3));
       // setShouldReset(true);
-      setLoading(false);
+      setCorrectLoading(true);
+      setTimeout(() => setCorrectLoading(false), 2000);
     };
 
     if (isInsideDropZone1(gesture)) {
@@ -108,9 +110,7 @@ const Game3: React.ComponentType<Props> = (props) => {
         setSolvedCardIDList(list => [ ...list, 0]);
 
         if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
-          increaseScore();
-          setLoading(true);
-          setTimeout(() => startNextTurn(), 100)
+          startNextTurn();
         };
       };
 
@@ -119,9 +119,7 @@ const Game3: React.ComponentType<Props> = (props) => {
       if (cardDeck.questionDeck[1].rank === rank) {
         setSolvedCardIDList(list => [ ...list, 1]);
         if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
-          increaseScore();
-          setLoading(true);
-          setTimeout(() => startNextTurn(), 100)
+          startNextTurn();
         };
       };
 
@@ -132,9 +130,7 @@ const Game3: React.ComponentType<Props> = (props) => {
 
         setSolvedCardIDList(list => [ ...list, 2]);
         if (solvedCardIDList.length === cardDeck.questionDeck.length - 1) {
-          increaseScore();
-          setLoading(true);
-          setTimeout(() => startNextTurn(), 100)
+          startNextTurn();
         };
       };
 
@@ -152,68 +148,68 @@ const Game3: React.ComponentType<Props> = (props) => {
   //   }
   // }, [cardDeck, solvedCardIDList, shouldFlip]);
 
-  React.useEffect(() => {
-
-    if (!shouldFlip) {
-      setTimeout(() => setShouldFlip(true), 3000);
-    };
-
-  }, [score]);
-  
   // React.useEffect(() => {
-  //   return () => {
 
-  //     const endTime = Date.now();
+  //   if (!shouldFlip) {
+  //     setTimeout(() => setShouldFlip(true), 3000);
+  //   };
 
-  //     const logging = async () => {
-  //       try {
-  //         const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
-  //           method: 'POST',
-  //           headers: {
-  //             // Accept: 'application/json',
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify({
-  //             userToken: "",
-  //             sysId: "IBRAIN",
-  //             funcId: "GAME_RSLT",
-  //             data: {
-  //               startTime,
-  //               endTime,
-  //               gameId: "IB_GAME3",
-  //               gameLogs: [
-  //                 {
-  //                   "logTime": "1546325436806",
-  //                   "logDetail": {
-  //                       "miss": "T",
-  //                       "x": 123,
-  //                       "y": 321
-  //                   }
-  //               },
-  //               {
-  //                   "logTime": "1546325438105",
-  //                   "logDetail": {
-  //                       "miss": "F",
-  //                       "x": 652,
-  //                       "y": 721,
-  //                   }
-  //               }
-  //               ]
-  //             }
-  //           }),
-  //         });
-  //         console.log("response", response)
-  //         const result = await response.json();
-  //         console.log("result", result)
+  // }, [score]);
+  
+  React.useEffect(() => {
+    return () => {
+
+      const endTime = Date.now();
+
+      const logging = async () => {
+        try {
+          const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
+            method: 'POST',
+            headers: {
+              // Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userToken: "",
+              sysId: "IBRAIN",
+              funcId: "GAME_RSLT",
+              data: {
+                startTime,
+                endTime,
+                gameId: "IB_GAME3",
+                gameLogs: [
+                  {
+                    "logTime": "1546325436806",
+                    "logDetail": {
+                        "miss": "T",
+                        "x": 123,
+                        "y": 321
+                    }
+                },
+                {
+                    "logTime": "1546325438105",
+                    "logDetail": {
+                        "miss": "F",
+                        "x": 652,
+                        "y": 721,
+                    }
+                }
+                ]
+              }
+            }),
+          });
+          console.log("response", response)
+          const result = await response.json();
+          console.log("result", result)
           
-  //       } catch (error) {
-  //         console.log("error", error)
-  //       }
-  //     }
+        } catch (error) {
+          console.log("error", error)
+        }
+      }
 
-  //     logging();
-  //   }
-  // }, []);
+      logging();
+    }
+  }, []);
 
   // console.log("dropZone1Values",dropZone1Values)
   // console.log("dropZone2Values",dropZone2Values)
@@ -225,6 +221,12 @@ const Game3: React.ComponentType<Props> = (props) => {
   if (loading) {
     return (
       <LoadingComponent />
+    );
+  };
+
+  if (correctLoading) {
+    return (
+      <CorrectLoading />
     );
   };
 
