@@ -1,14 +1,16 @@
 {
   "expo": {
-    "name": "react-native-card-games",
-    "slug": "react-native-card-games",
+    "name": "Ibrain",
+    "slug": "Ibrain",
+    "privacy": "public",
+    "scheme": "ibrain",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "landscape",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -22,7 +24,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.alltech.ibrain",
+      "requireFullScreen": true
     }
   }
 }

@@ -15,6 +15,7 @@
     "expo": "^40.0.0",
     "expo-av": "~8.7.0",
     "expo-crypto": "~8.4.0",
+    "expo-screen-orientation": "~2.1.0",
     "expo-secure-store": "~9.3.0",
     "lodash": "^4.17.15",
     "lottie-react-native": "~2.6.1",
