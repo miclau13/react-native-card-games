@@ -9,11 +9,12 @@ interface NavigatorProps {
 
 const Navigator: React.ComponentType<NavigatorProps> = ({ userToken }) => {
   return (
-    userToken === '' ? (
-      <LoginStack />
-    ) : (
-      <RootTab />
-    )
+    // userToken === '' ? (
+    //   <LoginStack />
+    // ) : (
+    //   <RootTab />
+    // )
+    <RootTab />
   );
 };
 
