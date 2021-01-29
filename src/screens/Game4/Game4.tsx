@@ -5,7 +5,9 @@ import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
 import { getRandomSuit } from '@components/FaceUpCard/utils';
 import LoadingComponent from '@components/Loading';
 import CorrectLoading from '@components/CorrectLoading';
+import EndGameLoading from '@components/EndGameLoading';
 
+import { CARDS_ROUND_MAP } from './constants';
 import { getRandomCardDeck } from './utils';
 import Game4View, { Game4ViewProps } from './Game4View';
 
@@ -21,6 +23,8 @@ type Props = {
 interface Game4 {
   loading: boolean;
   score: number;
+
+  startNextTurn(): void;
 };
 
 const Game4: React.ComponentType<Props> = (props) => {
@@ -34,6 +38,8 @@ const Game4: React.ComponentType<Props> = (props) => {
   const [flippedCardIdList] = React.useState<Game4ViewProps['flippedCardIdList']>([]);
   const [loading] = React.useState<Game4['loading']>(false);
   const [correctLoading, setCorrectLoading] = React.useState<Game4['loading']>(false);
+  const [endGameLoading, setEndGameLoading] = React.useState<Game4['loading']>(false);
+  const [round, setRound] = React.useState<Game4ViewProps['round']>(0);
   const [score, setScore] = React.useState<Game4['score']>(0);
 
   const startTime = Date.now();
@@ -50,19 +56,32 @@ const Game4: React.ComponentType<Props> = (props) => {
     return requiredSuit === clickedCard?.suit;
   }, [cardList, requiredSuit]);
 
+  const startNextTurn = React.useCallback<Game4['startNextTurn']>(() => {
+
+    setCardList(getRandomCardDeck(CARDS_ROUND_MAP[round + 1]));
+    setCorrectLoading(true);
+    setRequiredSuit(getRandomSuit());
+    setRound(round => round + 1);
+    setSolvedCardList([]);
+    setTimeout(() => setCorrectLoading(false), 2000);
+
+  }, [round]);
+
   React.useEffect(()=> {
-    function startNextTurn() {
-      setCardList(getRandomCardDeck(8));
-      setSolvedCardList([]);
-      setRequiredSuit(getRandomSuit());
-      setCorrectLoading(true);
-      setTimeout(() => setCorrectLoading(false), 2000);
-    };
+
+    function isEndGame() {
+      return round == 8
+    }
+
     function checkShouldGoToNextTurn() {
       // Condition varies on level
       const numberOfCorrectCard = cardList.filter(card => card.suit === requiredSuit).length;
       if (numberOfCorrectCard <= 0 || numberOfCorrectCard === solvedCardList.length) {
-        startNextTurn();
+        if (isEndGame()) {
+          setEndGameLoading(true);
+        } else {
+          startNextTurn();
+        }
       };
     };
     checkShouldGoToNextTurn();
@@ -71,55 +90,55 @@ const Game4: React.ComponentType<Props> = (props) => {
   React.useEffect(() => {
     return () => {
 
-      const endTime = Date.now();
+      // const endTime = Date.now();
 
-      const logging = async () => {
-        try {
-          const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
-            method: 'POST',
-            headers: {
-              // Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              userToken: "",
-              sysId: "IBRAIN",
-              funcId: "GAME_RSLT",
-              data: {
-                startTime,
-                endTime,
-                gameId: "IB_GAME4",
-                gameLogs: [
-                  {
-                    "logTime": "1546325436806",
-                    "logDetail": {
-                        "miss": "T",
-                        "x": 123,
-                        "y": 321
-                    }
-                },
-                {
-                    "logTime": "1546325438105",
-                    "logDetail": {
-                        "miss": "F",
-                        "x": 652,
-                        "y": 721,
-                    }
-                }
-                ]
-              }
-            }),
-          });
-          console.log("response", response)
-          const result = await response.json();
-          console.log("result", result)
+      // const logging = async () => {
+      //   try {
+      //     const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
+      //       method: 'POST',
+      //       headers: {
+      //         // Accept: 'application/json',
+      //         'Content-Type': 'application/json',
+      //       },
+      //       body: JSON.stringify({
+      //         userToken: "",
+      //         sysId: "IBRAIN",
+      //         funcId: "GAME_RSLT",
+      //         data: {
+      //           startTime,
+      //           endTime,
+      //           gameId: "IB_GAME4",
+      //           gameLogs: [
+      //             {
+      //               "logTime": "1546325436806",
+      //               "logDetail": {
+      //                   "miss": "T",
+      //                   "x": 123,
+      //                   "y": 321
+      //               }
+      //           },
+      //           {
+      //               "logTime": "1546325438105",
+      //               "logDetail": {
+      //                   "miss": "F",
+      //                   "x": 652,
+      //                   "y": 721,
+      //               }
+      //           }
+      //           ]
+      //         }
+      //       }),
+      //     });
+      //     console.log("response", response)
+      //     const result = await response.json();
+      //     console.log("result", result)
           
-        } catch (error) {
-          console.log("error", error)
-        }
-      }
+      //   } catch (error) {
+      //     console.log("error", error)
+      //   }
+      // }
 
-      logging();
+      // logging();
     }
   }, []);
 
@@ -135,6 +154,13 @@ const Game4: React.ComponentType<Props> = (props) => {
     );
   };
 
+
+  if (endGameLoading) {
+    return (
+      <EndGameLoading />
+    );
+  };
+
   return (
     <Game4View 
       cardList={cardList}
@@ -142,6 +168,7 @@ const Game4: React.ComponentType<Props> = (props) => {
       flippedCardIdList={flippedCardIdList}
       handleCardOnPress={handleCardOnPress}
       requiredSuit={requiredSuit}
+      round={round}
       solvedCardList={solvedCardList}
     />
   )

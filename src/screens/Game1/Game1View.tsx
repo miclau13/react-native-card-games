@@ -3,8 +3,8 @@ import React from 'react';
 import Board, { BoardProps } from '@components/Board';
 import GameHeader, { GameHeaderProps } from '@components/GameHeader';
 import GameBackground, { GameBackgroundProps } from '@components/GameBackground';
-import styles from './styles';
-import { CARDS_ROUND_MAP, TITLE } from './constants';
+// import styles from './styles';
+import { CARDS_ROUND_MAP } from './constants';
 
 export interface Game1ViewProps {
   cardList: BoardProps['cardList'];
