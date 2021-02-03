@@ -87,6 +87,8 @@ const Game4: React.ComponentType<Props> = (props) => {
     checkShouldGoToNextTurn();
   }, [cardList, requiredSuit, solvedCardList]);
 
+  console.log("GAME 4 cardLis", cardList)
+
   React.useEffect(() => {
     return () => {
 
@@ -153,7 +155,6 @@ const Game4: React.ComponentType<Props> = (props) => {
       <CorrectLoading />
     );
   };
-
 
   if (endGameLoading) {
     return (

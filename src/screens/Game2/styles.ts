@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     justifyContent: 'center',
   },
+  horizontalViewBox1: {
+    marginHorizontal: 8
+  },
   horizontalViewBox2: {
     marginHorizontal: 16
   },
