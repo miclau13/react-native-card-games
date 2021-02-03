@@ -3,9 +3,10 @@ import { PanResponderGestureState } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import LoadingComponent from '@components/Loading';
+import EndGameLoading from '@components/EndGameLoading';
 import CorrectLoading from '@components/CorrectLoading';
 import { HomeStackParamList } from '@navigator/StackNavigator/HomeStack';
-import { TITLE } from './constants';
+import { CARDS_ROUND_MAP, TITLE } from './constants';
 import { getRandomCardDeck } from './utils';
 import Game5View, { Game5ViewProps } from './Game5View';
 
@@ -21,117 +22,107 @@ type Props = {
 interface Game5 {
   loading: boolean;
   score: number;
+
+  startNextTurn(): void;
 };
 
 const Game5: React.ComponentType<Props> = (props) => {
   const { navigation } = props;
 
-  const [cardDeck, setCardDeck] = React.useState<Game5ViewProps['cardDeck']>(getRandomCardDeck(5, 3));
-  const [dropZoneValues, setDropZoneValues] = React.useState<Game5ViewProps['dropZoneValues']>({
-    "height": 0,
-    "width": 0,
-    "x": 0,
-    "y": 0,
-  });
+  const [cardDeck, setCardDeck] = React.useState<Game5ViewProps['cardDeck']>(getRandomCardDeck(3, 5));
+
   const [loading, setLoading] = React.useState<Game5['loading']>(false);
   const [correctLoading, setCorrectLoading] = React.useState<Game5['loading']>(false);
+  const [endGameLoading, setEndGameLoading] = React.useState<Game5['loading']>(false);
+  const [round, setRound] = React.useState<Game5ViewProps['round']>(0);
   const [score, setScore] = React.useState<Game5['score']>(0);
 
   const startTime = Date.now();
 
-  const isInsideDropZone = React.useCallback<Game5ViewProps['isInsideDropZone']>((gesture: PanResponderGestureState) => { 
-    console.log("isInsideDropZone dropZoneValues",dropZoneValues)
-    console.log("gesture",gesture)
-    const isInsideBoundY = gesture.moveY > dropZoneValues.y && gesture.moveY < dropZoneValues.y + dropZoneValues.height;
-    const isInsideBoundX = gesture.moveX > dropZoneValues.x && gesture.moveX < dropZoneValues.x + dropZoneValues.width;
-    return isInsideBoundY && isInsideBoundX;
-  }, [dropZoneValues]);
+  const isMatch = React.useCallback(id => {
+    const clickedCard = cardDeck.answerDeck.find(card => card.id === id) || { rank: 0,};
+    return +clickedCard.rank === cardDeck.answerPoint;
+  }, [cardDeck]);
 
-  const handleDropZoneOnLayout = React.useCallback<Game5ViewProps['handleDropZoneOnLayout']>((event) => {
-    setDropZoneValues(event.nativeEvent.layout);
-  }, []);
 
-  const handleOnDragRelease = React.useCallback<Game5ViewProps['handleOnDragRelease']>(rank => async (e, gesture) => {   
-    function increaseScore() {
-      setScore(score => score + 1);
-    };
+  const startNextTurn = React.useCallback<Game5['startNextTurn']>(() => {
 
-    function startNextTurn() {
-      setLoading(false);
-      setCardDeck(getRandomCardDeck(5, 3));
-      increaseScore();
-      setCorrectLoading(true);
-      setTimeout(() => setCorrectLoading(false), 2000);
-    };
+    setCardDeck(getRandomCardDeck(CARDS_ROUND_MAP[round + 1].answerDeck, CARDS_ROUND_MAP[round + 1].questionDeck));
+    setCorrectLoading(true);
+    setRound(round => round + 1);
+    setTimeout(() => setCorrectLoading(false), 2000);
 
-    if (isInsideDropZone(gesture)) {
-      //If correct
-      if (cardDeck.answerRank === rank) {
-        startNextTurn();
+  }, [round]);
 
+  const handleCardOnPress = React.useCallback<Game5ViewProps['handleCardOnPress']>(id => {
+    function isEndGame() {
+      return round == 8
+    }
+    if (isMatch(id)) {
+      if (isEndGame()) {
+        setEndGameLoading(true);
       } else {
-        // startNextTurn();
-      };
+        startNextTurn();
+      }
     };
-    
-  }, [cardDeck, dropZoneValues]);
+  }, [isMatch, round]);
 
   React.useEffect(() => {
     return () => {
 
-      const endTime = Date.now();
+      // const endTime = Date.now();
 
-      const logging = async () => {
-        try {
-          const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
-            method: 'POST',
-            headers: {
-              // Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              userToken: "",
-              sysId: "IBRAIN",
-              funcId: "GAME_RSLT",
-              data: {
-                startTime,
-                endTime,
-                gameId: "IB_GAME5",
-                gameLogs: [
-                  {
-                    "logTime": "1546325436806",
-                    "logDetail": {
-                        "miss": "T",
-                        "x": 123,
-                        "y": 321
-                    }
-                },
-                {
-                    "logTime": "1546325438105",
-                    "logDetail": {
-                        "miss": "F",
-                        "x": 652,
-                        "y": 721,
-                    }
-                }
-                ]
-              }
-            }),
-          });
-          console.log("response", response)
-          const result = await response.json();
-          console.log("result", result)
+      // const logging = async () => {
+      //   try {
+      //     const response = await fetch(`http://ec2-18-163-0-98.ap-east-1.compute.amazonaws.com:8080/api`, {
+      //       method: 'POST',
+      //       headers: {
+      //         // Accept: 'application/json',
+      //         'Content-Type': 'application/json',
+      //       },
+      //       body: JSON.stringify({
+      //         userToken: "",
+      //         sysId: "IBRAIN",
+      //         funcId: "GAME_RSLT",
+      //         data: {
+      //           startTime,
+      //           endTime,
+      //           gameId: "IB_GAME5",
+      //           gameLogs: [
+      //             {
+      //               "logTime": "1546325436806",
+      //               "logDetail": {
+      //                   "miss": "T",
+      //                   "x": 123,
+      //                   "y": 321
+      //               }
+      //           },
+      //           {
+      //               "logTime": "1546325438105",
+      //               "logDetail": {
+      //                   "miss": "F",
+      //                   "x": 652,
+      //                   "y": 721,
+      //               }
+      //           }
+      //           ]
+      //         }
+      //       }),
+      //     });
+      //     console.log("response", response)
+      //     const result = await response.json();
+      //     console.log("result", result)
           
-        } catch (error) {
-          console.log("error", error)
-        }
-      }
+      //   } catch (error) {
+      //     console.log("error", error)
+      //   }
+      // }
 
-      logging();
+      // logging();
     }
   }, []);
 
-  // console.log("dropZoneValues",dropZoneValues)
+  console.log("Game5 cardDeck", cardDeck)
   
   if (loading) {
     return (
@@ -145,13 +136,17 @@ const Game5: React.ComponentType<Props> = (props) => {
     );
   };
 
+  if (endGameLoading) {
+    return (
+      <EndGameLoading />
+    );
+  };
+
   return (
     <Game5View 
       cardDeck={cardDeck}
-      dropZoneValues={dropZoneValues}
-      handleDropZoneOnLayout={handleDropZoneOnLayout}
-      handleOnDragRelease={handleOnDragRelease}
-      isInsideDropZone={isInsideDropZone}
+      handleCardOnPress={handleCardOnPress}
+      round={round}
       title={TITLE}
     />
   )

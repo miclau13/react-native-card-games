@@ -32,13 +32,15 @@ export const getRandomQuestionsCardDeck = () => {
 
 export const getRandomAnswerCardDeck = (cardTotal: number, answerPoint: number) => {
   const cardTotalInHalf = Math.floor(cardTotal / 2);
-  const lowerDeck = Array.from(Array(cardTotalInHalf), _ => {
-    return { rank: getRandomRank(1, answerPoint - 1), suit: getRandomSuit(4) }
+  // const cardTotalInLowerHalf = Math.floor(cardTotal / 2);
+  const cardTotalInUpperHalf = cardTotal % 2 ? Math.floor(cardTotal / 2) : Math.floor(cardTotal / 2) - 1;
+  const lowerDeck = Array.from(Array(cardTotalInHalf), (_, index) => {
+    return { id: `${index}`, rank: getRandomRank(1, answerPoint - 1), suit: getRandomSuit(4) }
   });
-  const upperDeck = Array.from(Array(cardTotalInHalf), _ => {
-    return { rank: getRandomRank(answerPoint + 1, 13), suit: getRandomSuit(4) }
+  const upperDeck = Array.from(Array(cardTotalInUpperHalf), (_, index) => {
+    return { id: `${cardTotalInHalf + index + 1}`, rank: getRandomRank(answerPoint + 1, 13), suit: getRandomSuit(4) }
   });
-  const answerCard = { rank: getRandomRank(answerPoint, answerPoint), suit: getRandomSuit(4) };
+  const answerCard = { id: `${cardTotalInHalf}`, rank: getRandomRank(answerPoint, answerPoint), suit: getRandomSuit(4) };
 
   const deck = [
     ...lowerDeck,
@@ -47,11 +49,9 @@ export const getRandomAnswerCardDeck = (cardTotal: number, answerPoint: number) 
   ];
 
   return shuffleDeck(deck);
-
-  return deck;
 };
 
-export const getRandomCardDeck = (upperCardTotal: number, lowerCardTotal: number) => {
+export const getRandomCardDeck = (lowerCardTotal: number, upperCardTotal: number, ) => {
   const questionDeck = getRandomQuestionsCardDeck();
   const answerDeck = getRandomAnswerCardDeck(lowerCardTotal, questionDeck.answerPoint);
 

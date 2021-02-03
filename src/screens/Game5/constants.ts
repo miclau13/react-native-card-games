@@ -21,3 +21,15 @@ export const getDefaultDeck = () => {
 };
 
 export const TITLE = "請選擇正確的撲克牌";
+
+export const CARDS_ROUND_MAP = [
+  { answerDeck: 3, questionDeck: 5},
+  { answerDeck: 3, questionDeck: 5},
+  { answerDeck: 3, questionDeck: 5},
+  { answerDeck: 4, questionDeck: 5},
+  { answerDeck: 4, questionDeck: 5},
+  { answerDeck: 4, questionDeck: 5},
+  { answerDeck: 5, questionDeck: 5},
+  { answerDeck: 5, questionDeck: 5},
+  { answerDeck: 5, questionDeck: 5},
+];
