@@ -30,7 +30,7 @@ interface Game4 {
 const Game4: React.ComponentType<Props> = (props) => {
   const { navigation } = props;
 
-  const [cardList, setCardList] = React.useState<Game4ViewProps['cardList']>(getRandomCardDeck(8));
+  const [cardList, setCardList] = React.useState<Game4ViewProps['cardList']>(getRandomCardDeck(6));
   const [disabled] = React.useState<Game4ViewProps['disabled']>(false);
   const [requiredSuit, setRequiredSuit] = React.useState<Game4ViewProps['requiredSuit']>(getRandomSuit());
   const [solvedCardList, setSolvedCardList] = React.useState<Game4ViewProps['solvedCardList']>([]);
@@ -87,7 +87,7 @@ const Game4: React.ComponentType<Props> = (props) => {
     checkShouldGoToNextTurn();
   }, [cardList, requiredSuit, solvedCardList]);
 
-  console.log("GAME 4 cardLis", cardList)
+  // console.log("GAME 4 cardLis", cardList)
 
   React.useEffect(() => {
     return () => {
