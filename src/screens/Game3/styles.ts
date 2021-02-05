@@ -11,8 +11,14 @@ const styles = StyleSheet.create({
   horizontalViewBox1: {
     marginHorizontal: 8
   },
+  horizontalViewBox2: {
+    marginHorizontal: 16
+  },
   horizontalViewBox3: {
-    marginHorizontal: 48
+    marginHorizontal: 24
+  },
+  horizontalViewBox4: {
+    marginHorizontal: 32
   },
 });
 

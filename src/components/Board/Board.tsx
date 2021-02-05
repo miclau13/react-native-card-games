@@ -9,6 +9,7 @@ export interface BoardProps {
   cardPerRow: number;
   disabled: CardProps['disabled'];
   flippedCardIdList: string[];
+  gameNumber?: CardProps['gameNumber'];
   handleCardOnPress: CardProps['handleCardOnPress'];
   initialFaceDirection: CardProps['initialFaceDirection'];
   solvedCardList: string[];
@@ -20,6 +21,7 @@ const Board: React.ComponentType<BoardProps> = (props) => {
     cardPerRow,
     disabled,
     flippedCardIdList,
+    gameNumber,
     handleCardOnPress,
     initialFaceDirection,
     solvedCardList
@@ -33,6 +35,7 @@ const Board: React.ComponentType<BoardProps> = (props) => {
             <React.Fragment key={card.id}>
               <Card 
                 disabled={disabled || solvedCardList.includes(card.id)}
+                gameNumber={gameNumber}
                 handleCardOnPress={handleCardOnPress}
                 id={card.id}        
                 initialFaceDirection={initialFaceDirection}

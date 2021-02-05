@@ -21,3 +21,15 @@ export const getDefaultDeck = () => {
 };
 
 export const TITLE = "請記下撲克牌的次序";
+
+export const CARDS_ROUND_MAP = [
+  3,
+  3,
+  3,
+  4,
+  4,
+  4,
+  5,
+  5,
+  5,
+];

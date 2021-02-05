@@ -17,6 +17,7 @@ export interface ICard {
 export interface CardProps {
   disabled: boolean;
   id: string;
+  gameNumber?: number;
   handleCardOnPress(id: string): void;
   initialFaceDirection: FaceDirection;
   isFlipped: boolean;
@@ -35,6 +36,7 @@ const Card: React.ComponentType<CardProps> = (props) => {
     id,
     initialFaceDirection,
     isFlipped,
+    gameNumber,
     handleCardOnPress,
     solved,
     rank,
@@ -43,7 +45,12 @@ const Card: React.ComponentType<CardProps> = (props) => {
 
   const imageSrc = React.useMemo(() => {
     const initialImage = initialFaceDirection === "DOWN" ? BACKSIDE_CARD_IMAGE : getCardImageByRankAndSuit(rank, suit);
-    if (isFlipped || solved) {
+    if (gameNumber === 3) {
+      if (isFlipped) {
+        return initialFaceDirection === "UP" ? BACKSIDE_CARD_IMAGE : getCardImageByRankAndSuit(rank, suit);
+      } 
+
+    } else if (isFlipped || solved) {
       return initialFaceDirection === "UP" ? BACKSIDE_CARD_IMAGE : getCardImageByRankAndSuit(rank, suit);
     } 
     return initialImage;
@@ -80,12 +87,14 @@ const Card: React.ComponentType<CardProps> = (props) => {
         friction: 8,
         toValue: 0,
         tension: 1,
+        useNativeDriver: false,
       }).start();
     } else {
       Animated.spring(flipAnimatedValue, {
         friction: 8,
         toValue: 180,
         tension: 10,
+        useNativeDriver: false,
       }).start();
     }
   }, [flipAnimatedValue]);

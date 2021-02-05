@@ -30,14 +30,14 @@ const HomeView: React.ComponentType<HomeViewProps> = (props) => {
           resizeMode="contain"
         />
       </TouchableOpacity>
-      {/* <View style={styles.horizontalViewBox1} />
+      <View style={styles.horizontalViewBox1} />
       <TouchableOpacity onPress={handleGameCardOnPress(3)}>
         <Image
           source={require('@assets/Game/Game_3.png')}
           style={{ height: 300, width: 200 }}
           resizeMode="contain"
         />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <View style={styles.horizontalViewBox1} />
       <TouchableOpacity onPress={handleGameCardOnPress(4)}>
         <Image
