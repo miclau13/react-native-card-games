@@ -25,8 +25,6 @@ const FaceUpCard: React.ComponentType<FaceUpCardProps> = (props) => {
     shouldFlip
   } = props;
 
-  console.log("FaceUpCard shouldFlip",shouldFlip)
-
   const imageSrc = React.useMemo(() => {
     return getCardImageByRankAndSuit(rank, suit);
   }, [rank, suit]);

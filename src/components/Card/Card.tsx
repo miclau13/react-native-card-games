@@ -108,7 +108,7 @@ const Card: React.ComponentType<CardProps> = (props) => {
           <Image 
             containerStyle={[styles.flipContainer, styles.flipCard]}
             source={imageSrc}
-            style={{ height: 300, width: 200 }}
+            style={{ height: 240, width: 160 }}
             resizeMode="contain"
           />
         </Animated.View>
@@ -116,7 +116,7 @@ const Card: React.ComponentType<CardProps> = (props) => {
           <Image 
             containerStyle={[styles.flipContainer, styles.flipCard]}
             source={imageSrc}
-            style={{ height: 300, width: 200 }}
+            style={{ height: 240, width: 160 }}
             resizeMode="contain"
           />
         </Animated.View>

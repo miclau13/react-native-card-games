@@ -6,13 +6,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'pink'
   },
   flipImage: {
-    height: 300, 
-    width: 200,
+    height: 240, 
+    width: 160,
     // color: 'transparent'
   },
   image: {
-    height: 300, 
-    width: 200
+    height: 240, 
+    width: 160
   },
 });
 
